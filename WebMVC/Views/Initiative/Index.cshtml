@@ -1,0 +1,19 @@
+﻿@model WebMVC.Models.InitaitiveTransViewModel
+
+@{
+    ViewBag.Title = "Inicjatywa";
+}
+
+<h1>Inicjatywa</h1>
+
+<div>
+    <table style="border:1px">
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Initiative</td>
+            </tr>
+        }
+    </table>
+</div>

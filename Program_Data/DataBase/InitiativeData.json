@@ -1,0 +1,13 @@
+[
+{
+'Id':0,
+'Name':'Testowe stworzenie',
+'Initiative':15
+},
+{
+'Id':1,
+'Name':'Testowe stworzenie 2',
+'Initiative':10,
+'InitiativeBonus':3
+}
+]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackgroundLogic.InputOutput;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,10 @@ namespace WebMVC.Controllers
     {
         public ActionResult Index()
         {
+            var testData = JsonIO.GetInitiative();
+
+
+
             return View();
         }
 
