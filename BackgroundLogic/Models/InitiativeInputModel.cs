@@ -17,6 +17,7 @@ namespace BackgroundLogic.Models
             return new CreatureModel()
             {
                 Id = Id,
+                Name = Name,
                 Initiative = Initiative,
                 HP = HP,
                 AC = AC,

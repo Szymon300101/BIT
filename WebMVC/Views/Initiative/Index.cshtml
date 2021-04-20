@@ -7,13 +7,31 @@
 <h1>Inicjatywa</h1>
 
 <div>
-    <table style="border:1px">
-        @foreach (var item in Model.Data)
-        {
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>@item.Name</td>
-                <td>@item.Initiative</td>
+                <th scope="col">Inicjatywa</th>
+                <th scope="col">Nazwa Gracza</th>
+                <th scope="col">PŻ</th>
+                <th scope="col">Bonus</th>
+                <th scope="col">Usuń</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Data)
+            {
+                <tr>
+                    <td>@item.Initiative</td>
+                    <td>@item.Name</td>
+                    <td>@item.HP</td>
+                    <td>@item.InitiativeBonus</td>
+                    <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>
+
+
+
+
