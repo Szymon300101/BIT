@@ -29,6 +29,31 @@ namespace BackgroundLogic.InputOutput
             return allData;
         }
 
+        public static void DeleteRecord(int id)
+        {
 
+            string fullPath = FileIO.GetProgDataPath(initiativePath);
+
+            List<InitiativeInputModel> rawData = JsonConvert.DeserializeObject<List<InitiativeInputModel>>(FileIO.ReadTxt(fullPath));
+
+            rawData.RemoveAll(r => r.Id == id);
+            string output = JsonConvert.SerializeObject(rawData);
+
+            FileIO.WriteText(fullPath, output);
+
+        }
+        public static void AddRecord(CreatureModel newModel)
+        {
+
+            string fullPath = FileIO.GetProgDataPath(initiativePath);
+
+            List<InitiativeInputModel> rawData = JsonConvert.DeserializeObject<List<InitiativeInputModel>>(FileIO.ReadTxt(fullPath));
+
+            rawData.Add(new InitiativeInputModel(newModel)); 
+            string output = JsonConvert.SerializeObject(rawData);
+
+            FileIO.WriteText(fullPath, output);
+
+        }
     }
 }

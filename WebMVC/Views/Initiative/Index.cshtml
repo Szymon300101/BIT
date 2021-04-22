@@ -20,17 +20,36 @@
         <tbody>
             @foreach (var item in Model.Data)
             {
-                <tr>
-                    <td>@item.Initiative</td>
-                    <td>@item.Name</td>
-                    <td>@item.HP</td>
-                    <td>@item.InitiativeBonus</td>
-                    <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
-                </tr>
+            <tr>
+                <td>@item.Initiative</td>
+                <td>@item.Name</td>
+                <td>@item.HP</td>
+                <td>@item.InitiativeBonus</td>
+                <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
+            </tr>
             }
         </tbody>
     </table>
-</div>
+
+    @using (Html.BeginForm("Create",
+                        "Initiative",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken();
+
+    <div>
+        <input id="Name-Input" name="Name" type="text" value="" />
+
+        
+        <input type="submit" value="Zastosuj" class="btn btn-primary" id="Submit-Button"/>
+    </div>
+
+
+
+
+    }
+    </div>
 
 
 

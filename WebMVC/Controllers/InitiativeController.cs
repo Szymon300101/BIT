@@ -27,6 +27,19 @@ namespace WebMVC.Controllers
         public ActionResult Delete(int id)
         {
             //usuwanie
+            JsonIO.DeleteRecord(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CreatureModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                JsonIO.AddRecord(model);
+            }
+
 
             return RedirectToAction("Index");
         }
