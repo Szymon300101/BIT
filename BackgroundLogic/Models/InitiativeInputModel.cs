@@ -21,7 +21,7 @@ namespace BackgroundLogic.Models
             Initiative = model.Initiative;
             HP = model.HP;
             AC = model.AC;
-            MaxHP = model.MaxHP;
+            MaxHP = model.HP;
             InitiativeBonus = model.InitiativeBonus;
         }
 

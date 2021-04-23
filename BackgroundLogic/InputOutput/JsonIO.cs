@@ -49,6 +49,17 @@ namespace BackgroundLogic.InputOutput
 
             List<InitiativeInputModel> rawData = JsonConvert.DeserializeObject<List<InitiativeInputModel>>(FileIO.ReadTxt(fullPath));
 
+            int N = rawData.Count;
+            int MaxId = 0;
+            for(int i=0; i<N; i++)
+            {
+                int id1 = rawData[i].Id;
+                if (id1 > MaxId)
+                {
+                    MaxId = id1;
+                }    
+            }
+            newModel.Id = MaxId + 1;
             rawData.Add(new InitiativeInputModel(newModel)); 
             string output = JsonConvert.SerializeObject(rawData);
 

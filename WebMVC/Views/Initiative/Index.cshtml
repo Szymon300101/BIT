@@ -21,39 +21,39 @@
         <tbody>
             @foreach (var item in Model.Data)
             {
-            <tr>
-                <td>@item.Initiative</td>
-                <td>@item.Name</td>
-                <td>@item.HP</td>
-                <td>@item.InitiativeBonus</td>
-                <td>@item.AC</td>
-                <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
-            </tr>
+                <tr>
+                    <td>@item.Initiative</td>
+                    <td>@item.Name</td>
+                    <td>@item.HP</td>
+                    <td>@item.InitiativeBonus</td>
+                    <td>@item.AC</td>
+                    <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
+                </tr>
+            }
+            @using (Html.BeginForm("Create",
+                        "Initiative",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken();
+
+                <tr>
+                    <td><input id="Initiative-Input" name="Initiative" type="number" value="" /></td>
+                    <td><input id="Name-Input" name="Name" type="text" value="" /></td>
+                    <td><input id="HP-Input" name="HP" type="number" value="" /></td>
+                    <td><input id="InitiativeBonus-Input" name="InitiativeBonus" type="number" value="" /></td>
+                    <td><input id="AC-Input" name="AC" type="number" value="" /></td>
+                    <td><input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" /></td>
+                </tr>
+
+
+
+
             }
         </tbody>
     </table>
 
-    @using (Html.BeginForm("Create",
-                        "Initiative",
-                        FormMethod.Post,
-                        new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken();
-
-      <div>
-            <input id="InitiativeBonus-Input" name="InitiativeBonus" type="number" value="" />
-            <input id="Name-Input" name="Name" type="text" value="" />
-            <input id="HP-Input" name="HP" type="number" value="" />
-            <input id="Initiative-Input" name="Initiative" type="number" value="" />
-            <input id="AC-Input" name="AC" type="number" value="" />
-
-            <input type="submit" value="Zastosuj" class="btn btn-primary" id="Submit-Button" />
-      </div>
-
-
-
-
-    }
+    
     </div>
 
 
