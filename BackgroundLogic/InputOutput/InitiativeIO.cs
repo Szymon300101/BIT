@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BackgroundLogic.InputOutput
 {
-    public static class JsonIO
+    public static class InitiativeIO
     {
         private static string initiativePath = "DataBase/InitiativeData.json";
 

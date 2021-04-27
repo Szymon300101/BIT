@@ -13,10 +13,11 @@ namespace WebMVC.Controllers
     {
         public ActionResult Index()
         {
-            List<CreatureModel> initiativeRecords = JsonIO.GetInitiative();
-
+            List<CreatureModel> initiativeRecords = InitiativeIO.GetInitiative();
+            List<CreatureModel> creatureRecords = CreatureIO.GetData();
             InitaitiveTransViewModel model = new InitaitiveTransViewModel();
             model.Data = initiativeRecords;
+            model.CreatureList = creatureRecords;
 
             List<CreatureModel> SortedList = model.Data.OrderByDescending(o => o.Initiative).ToList();
             model.Data = SortedList;
@@ -27,7 +28,7 @@ namespace WebMVC.Controllers
         public ActionResult Delete(int id)
         {
             //usuwanie
-            JsonIO.DeleteRecord(id);
+            InitiativeIO.DeleteRecord(id);
             return RedirectToAction("Index");
         }
 
@@ -37,11 +38,13 @@ namespace WebMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                JsonIO.AddRecord(model);
+                InitiativeIO.AddRecord(model);
             }
 
 
             return RedirectToAction("Index");
         }
+
+        
     }
 }

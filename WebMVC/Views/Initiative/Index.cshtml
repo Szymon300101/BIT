@@ -6,20 +6,24 @@
 
 <h1>Inicjatywa</h1>
 
-<div>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Inicjatywa</th>
-                <th scope="col">Nazwa Gracza</th>
-                <th scope="col">PŻ</th>
-                <th scope="col">Bonus</th>
-                <th scope="col">AC</th>
-                <th scope="col">Usuń</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Data)
+<div class="row">
+    <div class="col-md-4">
+        @Html.Partial("~/Views/Creature/CreatureListPartial.cshtml", Model.CreatureList)
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Inicjatywa</th>
+                    <th scope="col">Nazwa Gracza</th>
+                    <th scope="col">PŻ</th>
+                    <th scope="col">Bonus</th>
+                    <th scope="col">AC</th>
+                    <th scope="col">Usuń</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Data)
             {
                 <tr>
                     <td>@item.Initiative</td>
@@ -30,7 +34,7 @@
                     <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
                 </tr>
             }
-            @using (Html.BeginForm("Create",
+                @using (Html.BeginForm("Create",
                         "Initiative",
                         FormMethod.Post,
                         new { enctype = "multipart/form-data" }))
@@ -38,11 +42,11 @@
                 @Html.AntiForgeryToken();
 
                 <tr>
-                    <td><input id="Initiative-Input" name="Initiative" type="number" value="" /></td>
-                    <td><input id="Name-Input" name="Name" type="text" value="" /></td>
-                    <td><input id="HP-Input" name="HP" type="number" value="" /></td>
-                    <td><input id="InitiativeBonus-Input" name="InitiativeBonus" type="number" value="" /></td>
-                    <td><input id="AC-Input" name="AC" type="number" value="" /></td>
+                    <td><input id="Initiative-Input" name="Initiative" type="number" value="" style="max-width:40px;"/></td>
+                    <td><input id="Name-Input" name="Name" type="text" value="" style="max-width: 400px; width: 400px;"/></td>
+                    <td><input id="HP-Input" name="HP" type="number" value="" style="max-width: 50px"/></td>
+                    <td><input id="InitiativeBonus-Input" name="InitiativeBonus" type="number" value="" style="max-width: 40px"/></td>
+                    <td><input id="AC-Input" name="AC" type="number" value="" style="max-width: 40px"/></td>
                     <td><input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" /></td>
                 </tr>
 
@@ -50,11 +54,11 @@
 
 
             }
-        </tbody>
-    </table>
-
-    
+            </tbody>
+        </table>
     </div>
+
+</div>
 
 
 

@@ -11,11 +11,11 @@ namespace WebMVC.Controllers
     {
         public ActionResult Index()
         {
-            var testData = JsonIO.GetInitiative();
+            var testData = InitiativeIO.GetInitiative();
 
 
 
-            return View();
+            return RedirectToAction("Index", "Initiative");
         }
 
         public ActionResult About()

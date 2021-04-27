@@ -7,6 +7,8 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 

@@ -9,5 +9,6 @@ namespace WebMVC.Models
     public class InitaitiveTransViewModel
     {
         public List<CreatureModel> Data { get; set; }
+        public List<CreatureModel> CreatureList { get; set; }
     }
 }
