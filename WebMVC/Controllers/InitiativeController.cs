@@ -45,6 +45,19 @@ namespace WebMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(CreatureModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                InitiativeIO.UpdateRecord(model);
+            }
+
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

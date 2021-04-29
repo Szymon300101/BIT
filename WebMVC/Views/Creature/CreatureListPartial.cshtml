@@ -2,34 +2,79 @@
 
 
 <h1>CreatureList</h1>
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Dodaj stworzenie
+</button>
 
 <div>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Inicjatywa</th>
-                <th scope="col">Nazwa Gracza</th>
+                <th scope="col">Nazwa</th>
                 <th scope="col">PŻ</th>
                 <th scope="col">Bonus</th>
                 <th scope="col">AC</th>
-                <th scope="col">Usuń</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Initiative</td>
                     <td>@item.Name</td>
                     <td>@item.HP</td>
                     <td>@item.InitiativeBonus</td>
                     <td>@item.AC</td>
-                    <td><a href="../Initiative/Delete/@item.Id"> X </a></td>
+                    <td><a href="../Creature/Delete/@item.Id"> X </a></td>
+                    
+                    <td style="width:40px; max-width:40px;">
+                        <a href="Creature/AddToInit/@item.Id">
+                            -->
+                        </a>
+                    </td>
                 </tr>
-           
+
             }
         </tbody>
     </table>
 
 
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Dodaj stworzenie</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Create",
+                        "Creature",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken();
+                        
+                    <div>
+                        Nazwa
+                        <input id="Name-Input" name="Name" type="text" value="" style="max-width: 300px; width: 300px;" /><br />
+                        HP
+                        <input id="HP-Input" name="HP" type="number" value="" style="max-width: 50px" /><br />
+                        Bonus do inicatywy
+                        <input id="InitiativeBonus-Input" name="InitiativeBonus" type="number" value="" style="max-width: 40px" /><br />
+                        AC
+                        <input id="AC-Input" name="AC" type="number" value="" style="max-width: 40px" /><br />
+                        <input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" />
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
 </div>

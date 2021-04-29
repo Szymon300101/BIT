@@ -60,7 +60,37 @@ namespace BackgroundLogic.InputOutput
                 }    
             }
             newModel.Id = MaxId + 1;
+
+            if(newModel.Initiative==0)
+            {
+                Random randomiser = new Random();
+                newModel.Initiative = randomiser.Next(1, 20)+newModel.InitiativeBonus;
+            }
+
             rawData.Add(new InitiativeInputModel(newModel)); 
+            string output = JsonConvert.SerializeObject(rawData);
+
+            FileIO.WriteText(fullPath, output);
+
+        }
+
+        public static void UpdateRecord(CreatureModel newModel)
+        {
+
+            string fullPath = FileIO.GetProgDataPath(initiativePath);
+
+            List<InitiativeInputModel> rawData = JsonConvert.DeserializeObject<List<InitiativeInputModel>>(FileIO.ReadTxt(fullPath));
+
+            if (newModel.Initiative == 0)
+            {
+                Random randomiser = new Random();
+                newModel.Initiative = randomiser.Next(1, 20) + newModel.InitiativeBonus;
+            }
+
+            int id = rawData.FindIndex(item => item.Id == newModel.Id);
+            rawData[id].Initiative = newModel.Initiative;
+            rawData[id].HP = newModel.HP;
+
             string output = JsonConvert.SerializeObject(rawData);
 
             FileIO.WriteText(fullPath, output);

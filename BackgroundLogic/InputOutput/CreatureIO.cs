@@ -26,6 +26,15 @@ namespace BackgroundLogic.InputOutput
             return allData;
         }
 
+        public static CreatureModel Select(int id)
+        {
+            string fullPath = FileIO.GetProgDataPath(dataPath);
+
+            List<CreatureModel> allData = JsonConvert.DeserializeObject<List<CreatureModel>>(FileIO.ReadTxt(fullPath));
+
+            return allData.Find(item => item.Id == id);
+        }
+
         public static void DeleteRecord(int id)
         {
 
@@ -57,6 +66,7 @@ namespace BackgroundLogic.InputOutput
                 }
             }
             newModel.Id = MaxId + 1;
+            newModel.Initiative = 0;
             rawData.Add(newModel);
             string output = JsonConvert.SerializeObject(rawData);
 
