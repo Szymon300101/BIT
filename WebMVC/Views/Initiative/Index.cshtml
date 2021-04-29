@@ -58,6 +58,9 @@
                         <td><input id="HP-Input" name="HP" type="number" value="" style="max-width: 50px" /></td>
                         <td><input id="InitiativeBonus-Input" name="InitiativeBonus" type="number" value="" style="max-width: 40px" /></td>
                         <td><input id="AC-Input" name="AC" type="number" value="" style="max-width: 40px" /></td>
+                        <td>
+                            @Html.DropDownList("CreatureType", new SelectList(new List<string> { "player", "enemy", "npc" }))
+                        </td>
                         <td><input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" /></td>
                     </tr>
 

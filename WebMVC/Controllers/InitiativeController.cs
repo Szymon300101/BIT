@@ -36,6 +36,9 @@ namespace WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreatureModel model)
         {
+            var errors = ModelState.Select(x => x.Value.Errors)
+                           .Where(y => y.Count > 0)
+                           .ToList();
             if (ModelState.IsValid)
             {
                 InitiativeIO.AddRecord(model);

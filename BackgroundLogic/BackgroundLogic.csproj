@@ -78,7 +78,8 @@
     <Compile Include="InputOutput\InitiativeIO.cs" />
     <Compile Include="Models\CreatureModel.cs" />
     <Compile Include="Models\EnemyModel.cs" />
-    <Compile Include="Models\InitiativeInputModel.cs" />
+    <Compile Include="Models\InputModels\CreatureInputModel.cs" />
+    <Compile Include="Models\InputModels\InitiativeInputModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

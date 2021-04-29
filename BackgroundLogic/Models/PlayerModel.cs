@@ -8,5 +8,10 @@ namespace BackgroundLogic.Models
 {
     class PlayerModel: CreatureModel
     {
+
+        public PlayerModel()
+        {
+            CreatureType = Helpers.CreatureTypeEnum.player;
+        }
     }
 }

@@ -7,37 +7,91 @@
 </button>
 
 <div>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Nazwa</th>
-                <th scope="col">PŻ</th>
-                <th scope="col">Bonus</th>
-                <th scope="col">AC</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.HP</td>
-                    <td>@item.InitiativeBonus</td>
-                    <td>@item.AC</td>
-                    <td><a href="../Creature/Delete/@item.Id"> X </a></td>
-                    
-                    <td style="width:40px; max-width:40px;">
-                        <a href="Creature/AddToInit/@item.Id">
-                            -->
-                        </a>
-                    </td>
-                </tr>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"><a href="#player" aria-controls="player" role="tab" data-toggle="tab">Gracze</a></li>
+        <li role="presentation"><a href="#enemy" aria-controls="enemy" role="tab" data-toggle="tab">Przeciwnicy</a></li>
+        <li role="presentation"><a href="#npc" aria-controls="npc" role="tab" data-toggle="tab">NPC</a></li>
+    </ul>
 
-            }
-        </tbody>
-    </table>
+    
+
+
+
+
+    <div>
+        <div class="row" style="font-weight:bold;">
+                <div class="col-md-3">Nazwa</div>
+                <div class="col-md-2">PŻ</div>
+                <div class="col-md-2">Bonus</div>
+                <div class="col-md-2">AC</div>
+                <div class="col-md-2"></div>
+        </div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="player">
+                <div class="row">
+                    @foreach (var item in Model.FindAll(item => item.CreatureType == BackgroundLogic.Helpers.CreatureTypeEnum.player))
+                    {
+                        <div class="col-md-3">@item.Name</div>
+                        <div class="col-md-2">@item.HP</div>
+                        <div class="col-md-2">@item.InitiativeBonus</div>
+                        <div class="col-md-2">@item.AC</div>
+                        <div class="col-md-1"><a href="../Creature/Delete/@item.Id"> X </a></div>
+
+                        <div class="col-md-2" style="width:40px; max-width:40px;">
+                            <a href="Creature/AddToInit/@item.Id">
+                                -->
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+            <div role="tabpanel" class="tab-pane" id="enemy">
+                <div class="row">
+                    @foreach (var item in Model.FindAll(item => item.CreatureType == BackgroundLogic.Helpers.CreatureTypeEnum.enemy))
+                    {
+                        <div class="col-md-3">@item.Name</div>
+                        <div class="col-md-2">@item.HP</div>
+                        <div class="col-md-2">@item.InitiativeBonus</div>
+                        <div class="col-md-2">@item.AC</div>
+                        <div class="col-md-1"><a href="../Creature/Delete/@item.Id"> X </a></div>
+
+                        <div class="col-md-2" style="width:40px; max-width:40px;">
+                            <a href="Creature/AddToInit/@item.Id">
+                                -->
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+            <div role="tabpanel" class="tab-pane" id="npc">
+                <div class="row">
+                    @foreach (var item in Model.FindAll(item => item.CreatureType == BackgroundLogic.Helpers.CreatureTypeEnum.npc))
+                    {
+                        <div class="col-md-3">@item.Name</div>
+                        <div class="col-md-2">@item.HP</div>
+                        <div class="col-md-2">@item.InitiativeBonus</div>
+                        <div class="col-md-2">@item.AC</div>
+                        <div class="col-md-1"><a href="../Creature/Delete/@item.Id"> X </a></div>
+
+                        <div class="col-md-2" style="width:40px; max-width:40px;">
+                            <a href="Creature/AddToInit/@item.Id">
+                                -->
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+    </div>
 
 
 </div>
@@ -60,6 +114,8 @@
                     @Html.AntiForgeryToken();
                         
                     <div>
+                        Rodzaj stworzenia
+                        @Html.DropDownList("CreatureType", new SelectList(new List<string> { "player", "enemy", "npc" }))
                         Nazwa
                         <input id="Name-Input" name="Name" type="text" value="" style="max-width: 300px; width: 300px;" /><br />
                         HP

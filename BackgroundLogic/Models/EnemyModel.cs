@@ -8,5 +8,10 @@ namespace BackgroundLogic.Models
 {
     class EnemyModel:CreatureModel
     {
+
+        public EnemyModel()
+        {
+            CreatureType = Helpers.CreatureTypeEnum.enemy;
+        }
     }
 }
