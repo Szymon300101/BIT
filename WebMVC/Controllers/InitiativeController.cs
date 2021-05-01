@@ -27,8 +27,16 @@ namespace WebMVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            //usuwanie
-            InitiativeIO.DeleteRecord(id);
+            try
+            {
+                InitiativeIO.DeleteRecord(id);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                TempData["ErrorMore"] = " STACK TRACE: " + e.StackTrace;
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -41,9 +49,21 @@ namespace WebMVC.Controllers
                            .ToList();
             if (ModelState.IsValid)
             {
-                InitiativeIO.AddRecord(model);
-            }
+                try
+                {
+                    if (String.IsNullOrWhiteSpace(model.Name)) throw new Exception("Nazwa stworzenia nie może być pusta");
 
+                    InitiativeIO.AddRecord(model);
+                }
+                catch (Exception e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                    TempData["ErrorMore"] = " STACK TRACE: " + e.StackTrace;
+                }
+            }else
+            {
+                TempData["ErrorMessage"] = "Błąd formulaża.";
+            }
 
             return RedirectToAction("Index");
         }
@@ -54,12 +74,67 @@ namespace WebMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                InitiativeIO.UpdateRecord(model);
+                try
+                {
+                    InitiativeIO.UpdateRecord(model);
+                }
+                catch (Exception e)
+                {
+                    TempData["ErrorMessage"] = e.Message;
+                    TempData["ErrorMore"] = " STACK TRACE: " + e.StackTrace;
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Błąd formulaża.";
             }
 
 
             return RedirectToAction("Index");
         }
+
+
+
+        public ActionResult Clear()
+        {
+            try
+            {
+                List<CreatureModel> records = InitiativeIO.GetInitiative();
+
+                foreach (var item in records)
+                {
+                    InitiativeIO.DeleteRecord(item.Id);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                TempData["ErrorMore"] = " STACK TRACE: " + e.StackTrace;
+            }
+
+            return RedirectToAction("Index");
+        }
+        public ActionResult RerollAll()
+        {
+            try
+            {
+                List<CreatureModel> records = InitiativeIO.GetInitiative();
+
+                foreach (var item in records)
+                {
+                    item.Initiative = 0;
+                    InitiativeIO.UpdateRecord(item);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                TempData["ErrorMore"] = " STACK TRACE: " + e.StackTrace;
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
 
     }
