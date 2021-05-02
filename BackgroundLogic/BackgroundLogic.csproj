@@ -71,13 +71,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Helpers\CreatureTypeEnum.cs" />
+    <Compile Include="InputOutput\BattleMapIO.cs" />
     <Compile Include="InputOutput\CreatureIO.cs" />
     <Compile Include="InputOutput\FileIO.cs" />
     <Compile Include="InputOutput\InitiativeIO.cs" />
+    <Compile Include="Models\BattleMapModel.cs" />
     <Compile Include="Models\CreatureModel.cs" />
     <Compile Include="Models\EnemyModel.cs" />
+    <Compile Include="Models\InputModels\BattleMapInputModel.cs" />
     <Compile Include="Models\InputModels\CreatureInputModel.cs" />
     <Compile Include="Models\InputModels\InitiativeInputModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
