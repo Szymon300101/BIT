@@ -23,6 +23,7 @@ namespace BackgroundLogic.Models.InputModels
             AC = model.AC;
             MaxHP = model.HP;
             InitiativeBonus = model.InitiativeBonus;
+            ImagePath = model.ImagePath;
         }
 
         public CreatureModel ToCreature()
@@ -49,7 +50,9 @@ namespace BackgroundLogic.Models.InputModels
             model.AC = AC;
             model.MaxHP = MaxHP;
             model.InitiativeBonus = InitiativeBonus;
-
+            model.ImagePath = ImagePath;
+            model.PositionX = 0;
+            model.PositionY = 0;
             return model;
         }
     }

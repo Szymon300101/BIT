@@ -39,7 +39,7 @@
                         <div class="col-md-2" style="padding: 0">@item.HP</div>
                         <div class="col-md-2" style="padding: 0">@item.InitiativeBonus</div>
                         <div class="col-md-2" style="padding: 0">@item.AC</div>
-                        <div class="col-md-1" style="padding: 0"><a href="../Creature/Delete/@item.Id"><i class="far fa-angry"></i></a></div>
+                        <div class="col-md-1" style="padding: 0"><a href="../Creature/Delete/@item.Id"><i class="fas fa-trash-alt"></i></a></div>
 
                         <div class="col-md-2" style="width:40px; max-width:40px; padding: 0">
                             <a href="Creature/AddToInit/@item.Id">
@@ -60,7 +60,7 @@
                         <div class="col-md-2" style="padding: 0">@item.HP</div>
                         <div class="col-md-2" style="padding: 0">@item.InitiativeBonus</div>
                         <div class="col-md-2" style="padding: 0">@item.AC</div>
-                        <div class="col-md-1" style="padding: 0"><a href="../Creature/Delete/@item.Id"><i class="far fa-angry"></i></a></div>
+                        <div class="col-md-1" style="padding: 0"><a href="../Creature/Delete/@item.Id"><i class="fas fa-trash-alt"></i></a></div>
 
                         <div class="col-md-2" style="width:40px; max-width:40px; padding: 0">
                             <a href="Creature/AddToInit/@item.Id">
@@ -82,7 +82,7 @@
                         <div class="col-md-2" style="padding: 0">@item.HP</div>
                         <div class="col-md-2" style="padding: 0">@item.InitiativeBonus</div>
                         <div class="col-md-2" style="padding: 0">@item.AC</div>
-                        <div class="col-md-1" style="padding: 0"><a href="../Creature/Delete/@item.Id"><i class="far fa-angry"></i></a></div>
+                        <div class="col-md-1" style="padding: 0"><a href="../Creature/Delete/@item.Id"><i class="fas fa-trash-alt"></i></a></div>
 
                         <div class="col-md-2" style="width:40px; max-width:40px; padding: 0">
                             <a href="Creature/AddToInit/@item.Id">
@@ -137,7 +137,11 @@
                             <tr>
                                 <th scope="row">AC</th>
                                 <td><input id="AC-Input" name="AC" type="number" value="" style="max-width: 50px" /></td>
-                            </tr> 
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td><input id="Upload-File-Button" type="file" onchange="requestSaveImg()" /></td>
+                            </tr>
                             <tr>
                                 <th scope="row"></th>
                                 <td><input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" /></td>
