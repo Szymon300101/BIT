@@ -23,7 +23,7 @@ namespace BackgroundLogic.InputOutput
 
             BattleMapInputModel rawData = JsonConvert.DeserializeObject<BattleMapInputModel>(FileIO.ReadTxt(fullPath));
 
-            data = rawData.ToCreature();
+            data = rawData.ToLogic();
 
             return data;
         }
@@ -32,7 +32,7 @@ namespace BackgroundLogic.InputOutput
         {
             string fullPath = FileIO.GetProgDataPath(dataPath);
 
-            string ioModel = new BattleMapInputModel(newModel);
+            BattleMapInputModel ioModel = new BattleMapInputModel(newModel);
 
             string output = JsonConvert.SerializeObject(ioModel);
 
