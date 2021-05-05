@@ -1,0 +1,68 @@
+﻿@model WebMVC.Models.BattleMapTransViewModel
+
+@{
+    ViewBag.Title = "Battle Mapa";
+    int w = 1000;
+    int res = 33;
+}
+
+<div id="battle-map-board" style="position:relative; border:1px solid red; width:1000px; height:600px;">
+
+
+    @for (int x=0;x<res;x++)
+    {
+        for(int y=0;y<(res/2);y++)
+        {
+            <div style="        
+                position: absolute;
+                left:   @(x*(w/res))px;
+                bottom: @(y*(w/res))px;
+                width:  @(w/res)px;
+                height: @(w/res)px;
+                border-top: 1px solid black;
+                border-right: 1px solid black;
+                "
+                 class="board-cell"
+                 pos_x ="@x"
+                 pos_y ="@y"
+                 >
+            </div>
+        }
+    }
+    
+
+
+</div>
+
+<style>
+    .body-content{
+        padding:0px;
+    }
+</style>
+
+<script>
+    window.onload = load;
+
+    function load() {
+
+        var w = window.innerWidth*0.988;
+        var scale = w / 1000;
+        var cell_size = 30 * scale;
+
+        document.getElementById("battle-map-board").style.width = w + "px";
+        document.getElementById("battle-map-board").style.height = ((w)/2) + "px";
+
+        var cells = document.getElementsByClassName("board-cell");
+        for (let i = 0; i < cells.length; i++) {
+            var x = cells[i].getAttribute("pos_x"); 
+            var y = cells[i].getAttribute("pos_y");
+
+            
+            cells[i].style.left = (x * cell_size) + "px";
+            cells[i].style.bottom = (y * cell_size) + "px";
+            cells[i].style.width = cell_size + "px";
+            cells[i].style.height = cell_size + "px";
+
+        }
+    }
+</script>

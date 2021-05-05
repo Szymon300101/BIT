@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace BackgroundLogic.Models.InputModels
 {
-    
-    public class BattleMapInputModel: BattleMapModel
+
+    public class BattleMapInputModel : BattleMapModel
     {
+        public BattleMapInputModel()
+        {
+
+        }
         public BattleMapInputModel(BattleMapModel model)
         {
             Turn = model.Turn;
