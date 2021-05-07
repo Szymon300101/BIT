@@ -51,7 +51,7 @@ namespace BackgroundLogic.Models.InputModels
             model.MaxHP = MaxHP;
             model.InitiativeBonus = InitiativeBonus;
             model.ImagePath = ImagePath;
-            model.PositionX = 0;
+            model.PositionX = Id;
             model.PositionY = 0;
             return model;
         }
