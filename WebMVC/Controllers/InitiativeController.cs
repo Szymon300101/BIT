@@ -76,6 +76,8 @@ namespace WebMVC.Controllers
             {
                 try
                 {
+                    model.PositionX = -1;
+                    model.PositionY = -1;
                     InitiativeIO.UpdateRecord(model);
                 }
                 catch (Exception e)

@@ -10,5 +10,6 @@ namespace BackgroundLogic.Models
     {
         public int Turn { get; set; }
         public string BackgroundPath { get; set; }
+        public int MovingId { get; set; }
     }
 }

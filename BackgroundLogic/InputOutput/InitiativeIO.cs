@@ -90,6 +90,8 @@ namespace BackgroundLogic.InputOutput
             int id = rawData.FindIndex(item => item.Id == newModel.Id);
             rawData[id].Initiative = newModel.Initiative;
             rawData[id].HP = newModel.HP;
+            if(newModel.PositionX != -1) rawData[id].PositionX = newModel.PositionX;
+            if(newModel.PositionY != -1) rawData[id].PositionY = newModel.PositionY;
 
             string output = JsonConvert.SerializeObject(rawData);
 

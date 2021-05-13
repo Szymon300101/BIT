@@ -31,6 +31,38 @@ namespace WebMVC.Controllers
 
         }
 
+        public ActionResult SetToMove(int id)
+        {
+            BattleMapModel battlemapRecord = BattleMapIO.GetData();
+            battlemapRecord.MovingId = id;
+
+            BattleMapIO.UpdateRecord(battlemapRecord);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Move(int id)
+        {
+            const int width = 33;
+            int x = id  %  width;
+            int y = id / width;
+
+
+            BattleMapModel battlemapRecord = BattleMapIO.GetData();
+            CreatureModel creature = InitiativeIO.GetInitiative().Find(item => item.Id == battlemapRecord.MovingId);
+            if(creature!=null)
+            {
+                creature.PositionX = x;
+                creature.PositionY = y;
+                InitiativeIO.UpdateRecord(creature);
+            }
+            battlemapRecord.MovingId = 0;
+            BattleMapIO.UpdateRecord(battlemapRecord);
+
+
+            return RedirectToAction("Index");
+        }
+
         /// <summary>
         /// Zwraca 'src' obrazka (png), które można urzyć w html'u
         /// </summary>
