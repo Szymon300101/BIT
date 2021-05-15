@@ -43,12 +43,12 @@ namespace WebMVC.Controllers
 
         public ActionResult Move(int id)
         {
-            const int width = 33;
-            int x = id  %  width;
-            int y = id / width;
-
-
             BattleMapModel battlemapRecord = BattleMapIO.GetData();
+
+            int x = id  %  battlemapRecord.Width;
+            int y = id / battlemapRecord.Width;
+
+
             CreatureModel creature = InitiativeIO.GetInitiative().Find(item => item.Id == battlemapRecord.MovingId);
             if(creature!=null)
             {
@@ -59,6 +59,21 @@ namespace WebMVC.Controllers
             battlemapRecord.MovingId = 0;
             BattleMapIO.UpdateRecord(battlemapRecord);
 
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Clear()
+        {
+            BattleMapIO.Clear();
+
+            List<CreatureModel> initiative = InitiativeIO.GetInitiative();
+            for (int i = 0; i < initiative.Count; i++)
+            {
+                initiative[i].PositionX = i;
+                initiative[i].PositionY = 0;
+                InitiativeIO.UpdateRecord(initiative[i]);
+            }
 
             return RedirectToAction("Index");
         }

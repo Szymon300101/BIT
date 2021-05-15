@@ -18,6 +18,8 @@ namespace BackgroundLogic.Models.InputModels
             Turn = model.Turn;
             BackgroundPath = model.BackgroundPath;
             MovingId = model.MovingId;
+            Width = model.Width;
+            Height = model.Height;
         }
 
         public BattleMapModel ToLogic()
@@ -27,6 +29,8 @@ namespace BackgroundLogic.Models.InputModels
             model.Turn = Turn;
             model.BackgroundPath = BackgroundPath;
             model.MovingId = MovingId;
+            model.Width = Width;
+            model.Height = Height;
 
             return model;
         }

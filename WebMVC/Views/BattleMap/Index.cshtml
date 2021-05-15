@@ -3,24 +3,29 @@
 
 @{
     ViewBag.Title = "Battle Mapa";
-    int w = 1000;
-    int res = 33;
+    int w = Model.StateData.Width;
+    int h = Model.StateData.Height;
+    int r_size = 50;
 }
 
-<div id="battle-map-board" style="position:relative; border:1px solid red; width:1000px; height:600px;">
+<div style="margin: 10px">
+    <a class="btn btn-primary"  href="../BattleMap/Clear">Wyczyść</a>
+</div>
+
+<div id="battle-map-board" style="position:relative; width:@(w*r_size)px; height:@(h*r_size)px; border-bottom: 1px solid black; border-left: 1px solid black;">
 
 
-    @for (int x=0;x<res;x++)
+    @for (int x = 0; x < w; x++)
     {
-        for(int y=0;y<(res/2);y++)
+        for (int y = 0; y < h; y++)
         {
-            <a @(Model.StateData.MovingId!=0 ? $"href=../BattleMap/Move/{y*res+x}" : "")>
+            <a @(Model.StateData.MovingId != 0 ? $"href=../BattleMap/Move/{y * w + x}" : "")>
                 <div style="
                         position: absolute;
-                        left:   @(x*(w/res))px;
-                        bottom: @(y*(w/res))px;
-                        width:  @(w/res)px;
-                        height: @(w/res)px;
+                        left:   @(x*r_size)px;
+                        bottom: @(y*r_size)px;
+                        width:  @(r_size)px;
+                        height: @(r_size)px;
                         border-top: 1px solid black;
                         border-right: 1px solid black;
                         "
@@ -31,30 +36,26 @@
             </a>
         }
     }
-            @for (int id=0; id<Model.FullInitiative.Count();id++)
-             {
-                <a @(Model.StateData.MovingId!=0 
-                     ? $"href=../BattleMap/Move/{@Model.FullInitiative[id].PositionY*res+@Model.FullInitiative[id].PositionX}"
-                     : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}") >
-                    <div style="
+    @for (int id = 0; id < Model.FullInitiative.Count(); id++)
+    {
+        <a @(Model.StateData.MovingId != 0 ? $"" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
+            <div style="
                                                 position: absolute;
-                                                left:   @((Model.FullInitiative[id].PositionX)*(w/res))px;
-                                                bottom: @((Model.FullInitiative[id].PositionY)*(w/res))px;
-                                                width:  @(w/res)px;
-                                                height: @(w/res)px;
-                                                border-top: 1px solid blue;
-                                                border-right: 1px solid blue;
+                                                left:   @((Model.FullInitiative[id].PositionX)*(r_size))px;
+                                                bottom: @((Model.FullInitiative[id].PositionY)*(r_size))px;
+                                                width:  @(r_size)px;
+                                                height: @(r_size)px;
                                                 "
-                         class="board-cell"
-                         pos_x="@Model.FullInitiative[id].PositionX"
-                         pos_y="@Model.FullInitiative[id].PositionY">
+                 class="board-cell"
+                 pos_x="@Model.FullInitiative[id].PositionX"
+                 pos_y="@Model.FullInitiative[id].PositionY">
 
-                        <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })" style="width:100%; height:100%" />
+                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })" style="width:100%; height:100%" />
 
-                    </div>
-                </a>
-             }
-    
+            </div>
+        </a>
+    }
+
 
 
 
@@ -67,7 +68,7 @@
 </style>
 
 <script>
-    window.onload = load;
+   // window.onload = load;
 
     function load() {
 

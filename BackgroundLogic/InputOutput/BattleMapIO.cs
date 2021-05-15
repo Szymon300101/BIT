@@ -40,6 +40,18 @@ namespace BackgroundLogic.InputOutput
 
         }
 
+        public static void Clear()
+        {
+            BattleMapModel model = new BattleMapModel();
+            model.Turn = 0;
+            model.BackgroundPath = null;
+            model.MovingId = 0;
+            model.Width = 40;   //domyślna szerokość i wysokość planszy
+            model.Height = 15;
+
+            UpdateRecord(model);
+        }
+
 
     }
 }

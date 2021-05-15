@@ -11,5 +11,9 @@ namespace BackgroundLogic.Models
         public int Turn { get; set; }
         public string BackgroundPath { get; set; }
         public int MovingId { get; set; }
+
+        //wymiary w kratkach
+        public int Width { get; set; }
+        public int Height { get; set; }
     }
 }
