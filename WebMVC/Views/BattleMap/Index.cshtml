@@ -45,12 +45,15 @@
                                                 bottom: @((Model.FullInitiative[id].PositionY)*(r_size))px;
                                                 width:  @(r_size)px;
                                                 height: @(r_size)px;
-                                                "
+                                                "                 
                  class="board-cell"
                  pos_x="@Model.FullInitiative[id].PositionX"
                  pos_y="@Model.FullInitiative[id].PositionY">
 
-                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })" style="width:100%; height:100%" />
+                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })" style="width:100%; height:100%" 
+                 data-toggle="tooltip" 
+                 data-placement="top" 
+                 title = @(Model.FullInitiative[id].Name)>
 
             </div>
         </a>
