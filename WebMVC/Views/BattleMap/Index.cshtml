@@ -9,11 +9,15 @@
 }
 
 <div style="margin: 10px">
-    <a class="btn btn-primary"  href="../BattleMap/Clear">Wyczyść</a>
+    <a class="btn btn-primary" href="../BattleMap/Clear">Wyczyść</a>       
 </div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    Dodaj tło
+</button>
 
 <div id="battle-map-board" style="position:relative; width:@(w*r_size)px; height:@(h*r_size)px; border-bottom: 1px solid black; border-left: 1px solid black;">
 
+    <img src="@Url.Action("GetBackground", new { path = (FileIO.GetProgDataPath(Model.StateData.BackgroundPath)) })" style="width:100%;height:100%"/>
 
     @for (int x = 0; x < w; x++)
     {
@@ -40,20 +44,21 @@
     {
         <a @(Model.StateData.MovingId != 0 ? $"" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
             <div style="
-                                                position: absolute;
-                                                left:   @((Model.FullInitiative[id].PositionX)*(r_size))px;
-                                                bottom: @((Model.FullInitiative[id].PositionY)*(r_size))px;
-                                                width:  @(r_size)px;
-                                                height: @(r_size)px;
-                                                "                 
+                         position: absolute;
+                         left:   @((Model.FullInitiative[id].PositionX)*(r_size))px;
+                         bottom: @((Model.FullInitiative[id].PositionY)*(r_size))px;
+                         width:  @(r_size)px;
+                         height: @(r_size)px;
+                         "
                  class="board-cell"
                  pos_x="@Model.FullInitiative[id].PositionX"
                  pos_y="@Model.FullInitiative[id].PositionY">
 
-                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })" style="width:100%; height:100%" 
-                 data-toggle="tooltip" 
-                 data-placement="top" 
-                 title = @(Model.FullInitiative[id].Name)>
+                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })"
+                     style="width:100%; height:100%"
+                     data-toggle="tooltip"
+                     data-placement="top"
+                     title=@(Model.FullInitiative[id].Name)>
 
             </div>
         </a>
@@ -65,29 +70,29 @@
 </div>
 
 <style>
-    .body-content{
-        padding:0px;
+    .body-content {
+        padding: 0px;
     }
 </style>
 
 <script>
-   // window.onload = load;
+    //window.onload = load;
 
     function load() {
 
-        var w = window.innerWidth*0.988;
+        var w = window.innerWidth * 0.988;
         var scale = w / 1000;
         var cell_size = 30 * scale;
 
         document.getElementById("battle-map-board").style.width = w + "px";
-        document.getElementById("battle-map-board").style.height = ((w)/2) + "px";
+        document.getElementById("battle-map-board").style.height = ((w) / 2) + "px";
 
         var cells = document.getElementsByClassName("board-cell");
         for (let i = 0; i < cells.length; i++) {
-            var x = cells[i].getAttribute("pos_x"); 
+            var x = cells[i].getAttribute("pos_x");
             var y = cells[i].getAttribute("pos_y");
 
-            
+
             cells[i].style.left = (x * cell_size) + "px";
             cells[i].style.bottom = (y * cell_size) + "px";
             cells[i].style.width = cell_size + "px";
@@ -96,3 +101,56 @@
         }
     }
 </script>
+
+@section Scripts
+{
+    @Scripts.Render("~/Scripts/BattleMapMenagement.js")
+}
+
+
+<!--Modal-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Dodaj stworzenie</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("AddBackground",
+                        "BattleMap",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken();
+
+                    <div>
+                        <table class="table">
+                            <tr>
+                                <th scope="row">Szerokość w kratkach</th>
+                                <td><input id="Xkratek" name="Width" type="number" value="" style="max-width: 300px; width: 300px;" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Wysokość w kratkach</th>
+                                <td><input id="Ykratek" name="Height" type="number" value="" style="max-width: 300px; width: 300px;" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Dodaj obraz</th>
+                                <td><input id="Upload-File-Button" type="file" onchange="requestSaveImg()" /></td>
+                                <td hidden> <input type="text" id="FilePath-Field" name="FilePath" value="" /></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td><input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" /></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>

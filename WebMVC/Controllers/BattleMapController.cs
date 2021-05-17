@@ -78,6 +78,19 @@ namespace WebMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult AddBackground(AddBackgroundModel model)
+        {
+            
+            BattleMapModel battlemapRecord = BattleMapIO.GetData();
+            battlemapRecord.BackgroundPath = model.FilePath;
+            battlemapRecord.Width = model.Width;
+            battlemapRecord.Height = model.Height;
+            BattleMapIO.UpdateRecord(battlemapRecord);
+
+
+            return RedirectToAction("Index");
+        }
+
         /// <summary>
         /// Zwraca 'src' obrazka (png), które można urzyć w html'u
         /// </summary>
@@ -109,6 +122,39 @@ namespace WebMVC.Controllers
                     return File(streak.ToArray(), "image/png");
                 }
             }
+        }
+        public ActionResult GetBackground(string path)
+        {
+            if (path == null || !System.IO.File.Exists(path))
+            {                              
+                 path = FileIO.GetProgDataPath("ImageBase/Background/Default/Default.png");                   
+            }
+
+            using (var srcImage = Image.FromFile(path))
+            {
+                using (var streak = new MemoryStream())
+                {
+                    srcImage.Save(streak, ImageFormat.Png);
+                    return File(streak.ToArray(), "image/png");
+                }
+            }
+        }
+        public ActionResult SaveImg()
+        {
+            Stream file = Request.Files[0].InputStream;
+
+            string path = $"/ImageBase/Background/Custom.png";
+            string fullPath = FileIO.GetProgDataPath(path);
+            using (var fileStream = System.IO.File.Create(fullPath))
+            {
+                file.Seek(0, SeekOrigin.Begin);
+                file.CopyTo(fileStream);
+            }
+
+
+            var contents = new { path = path };
+
+            return Json(contents, JsonRequestBehavior.AllowGet);
         }
     }
 }
