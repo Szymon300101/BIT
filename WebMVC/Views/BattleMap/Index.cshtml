@@ -8,23 +8,40 @@
     int r_size = 50;
 }
 
-<div style="margin: 10px">
-    <a class="btn btn-primary" href="../BattleMap/Clear">Wyczyść</a>       
-</div>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-    Dodaj tło
-</button>
+
 
 <div id="battle-map-board" style="position:relative; width:@(w*r_size)px; height:@(h*r_size)px; border-bottom: 1px solid black; border-left: 1px solid black;">
 
-    <img src="@Url.Action("GetBackground", new { path = (FileIO.GetProgDataPath(Model.StateData.BackgroundPath)) })" style="width:100%;height:100%"/>
+    <img src="@Url.Action("GetBackground", new { path = (FileIO.GetProgDataPath(Model.StateData.BackgroundPath)) })" style="width:100%;height:100%" />
+
+
+
+    @if(Model.StateData.MovingId != 0)
+    {
+        for(int i=0;i<Model.FullInitiative.Count;i++)
+        {
+            if(Model.FullInitiative[i].Id == Model.StateData.MovingId)
+            {
+                <div style="
+                            border:1px solid red;
+                            border-radius:@(r_size*6.5)px;
+                            position:absolute;
+                            left:@(Model.FullInitiative[i].PositionX*r_size-r_size*6)px;
+                            bottom:@(Model.FullInitiative[i].PositionY*r_size-r_size*6)px;
+                            width: @(r_size*13)px;
+                            height: @(r_size*13)px;
+                            ">
+                </div>
+            }
+        }
+    }
 
     @for (int x = 0; x < w; x++)
     {
         for (int y = 0; y < h; y++)
         {
-            <a @(Model.StateData.MovingId != 0 ? $"href=../BattleMap/Move/{y * w + x}" : "")>
-                <div style="
+    <a @(Model.StateData.MovingId != 0 ? $"href=../BattleMap/Move/{y * w + x}" : "")>
+        <div style="
                         position: absolute;
                         left:   @(x*r_size)px;
                         bottom: @(y*r_size)px;
@@ -33,37 +50,41 @@
                         border-top: 1px solid black;
                         border-right: 1px solid black;
                         "
-                     class="board-cell"
-                     pos_x="@x"
-                     pos_y="@y">
-                </div>
-            </a>
+             class="board-cell"
+             pos_x="@x"
+             pos_y="@y">
+        </div>
+    </a>
         }
     }
     @for (int id = 0; id < Model.FullInitiative.Count(); id++)
     {
-        <a @(Model.StateData.MovingId != 0 ? $"" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
-            <div style="
+    <a @(Model.StateData.MovingId != 0 ? $"" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
+        <div style="
                          position: absolute;
                          left:   @((Model.FullInitiative[id].PositionX)*(r_size))px;
                          bottom: @((Model.FullInitiative[id].PositionY)*(r_size))px;
                          width:  @(r_size)px;
                          height: @(r_size)px;
+                         @(id == Model.StateData.Turn ? "border:2px solid #e67300;" : "")
                          "
-                 class="board-cell"
-                 pos_x="@Model.FullInitiative[id].PositionX"
-                 pos_y="@Model.FullInitiative[id].PositionY">
+             class="board-cell"
+             pos_x="@Model.FullInitiative[id].PositionX"
+             pos_y="@Model.FullInitiative[id].PositionY">
 
-                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })"
-                     style="width:100%; height:100%"
-                     data-toggle="tooltip"
-                     data-placement="top"
-                     title=@(Model.FullInitiative[id].Name)>
+            <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })"
+                 style="width:100%; height:100%"
+                 data-toggle="tooltip"
+                 data-placement="top"
+                 title=@(Model.FullInitiative[id].Name)>
 
-            </div>
-        </a>
+        </div>
+    </a>
     }
 
+    <div style="position:absolute;top:0px;left:0px;">
+        @Html.Partial("~/Views/BattleMap/BattleMapInitiativePartial.cshtml", Model)
+    </div>
 
 
 

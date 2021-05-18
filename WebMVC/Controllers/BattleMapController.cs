@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using WebMVC.Models;
 
 namespace WebMVC.Controllers
@@ -59,6 +60,12 @@ namespace WebMVC.Controllers
             battlemapRecord.MovingId = 0;
             BattleMapIO.UpdateRecord(battlemapRecord);
 
+
+            return RedirectToAction("Index");
+        }
+        public ActionResult NewTurn()
+        {
+            BattleMapIO.NewTurn();
 
             return RedirectToAction("Index");
         }
@@ -123,6 +130,7 @@ namespace WebMVC.Controllers
                 }
             }
         }
+        [OutputCache(Duration = 20, Location = OutputCacheLocation.Client)]
         public ActionResult GetBackground(string path)
         {
             if (path == null || !System.IO.File.Exists(path))

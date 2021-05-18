@@ -46,12 +46,27 @@ namespace BackgroundLogic.InputOutput
             model.Turn = 0;
             model.BackgroundPath = null;
             model.MovingId = 0;
-            model.Width = 40;   //domyślna szerokość i wysokość planszy
-            model.Height = 15;
+            model.Width = 24;   //domyślna szerokość i wysokość planszy
+            model.Height = 18;
 
             UpdateRecord(model);
         }
+        public static void NewTurn()
+        {
+            BattleMapModel model = BattleMapIO.GetData();
+            List<CreatureModel> initiative = InitiativeIO.GetInitiative();
 
+            if (model.Turn < initiative.Count - 1)
+            {
+                model.Turn = model.Turn + 1;
+            }
+            else
+            {
+                model.Turn = 0;
+            }
+
+            UpdateRecord(model);
+        }
 
     }
 }
