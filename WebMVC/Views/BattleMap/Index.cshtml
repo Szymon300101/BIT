@@ -59,7 +59,7 @@
     }
     @for (int id = 0; id < Model.FullInitiative.Count(); id++)
     {
-    <a @(Model.StateData.MovingId != 0 ? $"" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
+    <a @(Model.StateData.MovingId != 0 ? $"data-toggle=modal data-target=#dmgModal onclick=dmgModalSetup({Model.FullInitiative[id].Id})" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
         <div style="
                          position: absolute;
                          left:   @((Model.FullInitiative[id].PositionX)*(r_size))px;
@@ -165,6 +165,46 @@
                                 <td><input type="submit" value="Dodaj" class="btn btn-primary" id="Submit-Button" /></td>
                             </tr>
 
+                        </table>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="dmgModal" tabindex="-1" role="dialog" aria-labelledby="dmgModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="dmgModalLabel">Zadane obrażenia</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("DmgCreature",
+                        "BattleMap",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken();
+
+                    <div>
+                        <table class="table">
+                            <tr>
+                                <th scope="row">Podaj obrażenia</th>
+                                <td><input id="Dmg" name="Dmg" type="number" value="" style="max-width: 300px; width: 300px;" /></td>
+                            </tr>
+                            <tr hidden>
+                                <td><input id="DmgCreatureId" name="DmgCreatureId" type="number" value=""/></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td><input type="submit" value="Zadaj" class="btn btn-primary" id="Submit-Button" /></td>
+                            </tr>
                         </table>
                     </div>
                 }

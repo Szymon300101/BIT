@@ -46,12 +46,12 @@ namespace WebMVC.Controllers
         {
             BattleMapModel battlemapRecord = BattleMapIO.GetData();
 
-            int x = id  %  battlemapRecord.Width;
+            int x = id % battlemapRecord.Width;
             int y = id / battlemapRecord.Width;
 
 
             CreatureModel creature = InitiativeIO.GetInitiative().Find(item => item.Id == battlemapRecord.MovingId);
-            if(creature!=null)
+            if (creature != null)
             {
                 creature.PositionX = x;
                 creature.PositionY = y;
@@ -87,7 +87,7 @@ namespace WebMVC.Controllers
 
         public ActionResult AddBackground(AddBackgroundModel model)
         {
-            
+
             BattleMapModel battlemapRecord = BattleMapIO.GetData();
             battlemapRecord.BackgroundPath = model.FilePath;
             battlemapRecord.Width = model.Width;
@@ -134,8 +134,8 @@ namespace WebMVC.Controllers
         public ActionResult GetBackground(string path)
         {
             if (path == null || !System.IO.File.Exists(path))
-            {                              
-                 path = FileIO.GetProgDataPath("ImageBase/Background/Default/Default.png");                   
+            {
+                path = FileIO.GetProgDataPath("ImageBase/Background/Default/Default.png");
             }
 
             using (var srcImage = Image.FromFile(path))
@@ -163,6 +163,36 @@ namespace WebMVC.Controllers
             var contents = new { path = path };
 
             return Json(contents, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DmgCreature(DmgCreatureModel dmgCreatureModel)
+        {
+            List<CreatureModel> initiative = InitiativeIO.GetInitiative();
+            int pos = initiative.FindIndex(item => item.Id == dmgCreatureModel.DmgCreatureId);
+            CreatureModel thisCreature = initiative[pos];
+            thisCreature.HP = thisCreature.HP - dmgCreatureModel.Dmg;
+
+
+            if(thisCreature.HP <=0 && thisCreature.CreatureType != CreatureTypeEnum.player)
+            {
+                InitiativeIO.DeleteRecord(thisCreature.Id);
+            }else
+            {
+                if (thisCreature.HP < 0)
+                {
+                    thisCreature.HP = 0;
+                }
+                InitiativeIO.UpdateRecord(thisCreature);
+            }
+
+            BattleMapModel battlemapRecord = BattleMapIO.GetData();
+            battlemapRecord.MovingId = 0;
+
+            BattleMapIO.UpdateRecord(battlemapRecord);
+
+
+
+            return RedirectToAction("Index");
         }
     }
 }

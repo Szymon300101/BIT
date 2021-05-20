@@ -33,6 +33,8 @@ function requestSaveImg() {
         processData: false,
         success: function (response) {
             console.log(response);
+            document.getElementById("FilePath-Field").value = response.path;
+            console.log(document.getElementById("FilePath-Field").value);
         },
         error: function (xhr) {
             console.log(xhr);

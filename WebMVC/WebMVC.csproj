@@ -179,6 +179,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddBackgroundModel.cs" />
     <Compile Include="Models\BattleMapTransViewModel.cs" />
+    <Compile Include="Models\DmgCreatureModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InitaitiveTransViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

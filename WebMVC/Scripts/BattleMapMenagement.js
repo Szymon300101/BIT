@@ -33,3 +33,9 @@ function requestSaveImg() {
         }
     });
 }
+
+function dmgModalSetup(id) {
+    document.getElementById("DmgCreatureId").value = id;
+
+
+}
