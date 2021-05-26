@@ -15,15 +15,15 @@
     <img src="@Url.Action("GetBackground", new { path = (FileIO.GetProgDataPath(Model.StateData.BackgroundPath)) })" style="width:100%;height:100%" />
 
 
-
-    @if(Model.StateData.MovingId != 0)
+    <!--KÓŁKA-->
+    @if (Model.StateData.MovingId != 0)
     {
-        for(int i=0;i<Model.FullInitiative.Count;i++)
+        for (int i = 0; i < Model.FullInitiative.Count; i++)
         {
-            if(Model.FullInitiative[i].Id == Model.StateData.MovingId)
+            if (Model.FullInitiative[i].Id == Model.StateData.MovingId)
             {
                 <div style="
-                            border:1px solid red;
+                            border:1px dashed red;
                             border-radius:@(r_size*6.5)px;
                             position:absolute;
                             left:@(Model.FullInitiative[i].PositionX*r_size-r_size*6)px;
@@ -32,16 +32,27 @@
                             height: @(r_size*13)px;
                             ">
                 </div>
+                <div style="
+                            border:1px dashed red;
+                            border-radius:@(r_size*12.5)px;
+                            position:absolute;
+                            left:@(Model.FullInitiative[i].PositionX*r_size-r_size*12)px;
+                            bottom:@(Model.FullInitiative[i].PositionY*r_size-r_size*12)px;
+                            width: @(r_size*25)px;
+                            height: @(r_size*25)px;
+                            ">
+                </div>
             }
         }
     }
 
+    <!--KRATKI-->
     @for (int x = 0; x < w; x++)
     {
         for (int y = 0; y < h; y++)
         {
-    <a @(Model.StateData.MovingId != 0 ? $"href=../BattleMap/Move/{y * w + x}" : "")>
-        <div style="
+            <a @(Model.StateData.MovingId != 0 ? $"href=../BattleMap/Move/{y * w + x}" : "")>
+                <div style="
                         position: absolute;
                         left:   @(x*r_size)px;
                         bottom: @(y*r_size)px;
@@ -50,17 +61,19 @@
                         border-top: 1px solid black;
                         border-right: 1px solid black;
                         "
-             class="board-cell"
-             pos_x="@x"
-             pos_y="@y">
-        </div>
-    </a>
+                     class="board-cell"
+                     pos_x="@x"
+                     pos_y="@y">
+                </div>
+            </a>
         }
     }
+
+    <!--STWORZENIA-->
     @for (int id = 0; id < Model.FullInitiative.Count(); id++)
     {
-    <a @(Model.StateData.MovingId != 0 ? $"data-toggle=modal data-target=#dmgModal onclick=dmgModalSetup({Model.FullInitiative[id].Id})" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
-        <div style="
+        <a @(Model.StateData.MovingId != 0 ? $"data-toggle=modal data-target=#dmgModal onclick=dmgModalSetup({Model.FullInitiative[id].Id})" : $"href=../BattleMap/SetToMove/{Model.FullInitiative[id].Id}")>
+            <div style="
                          position: absolute;
                          left:   @((Model.FullInitiative[id].PositionX)*(r_size))px;
                          bottom: @((Model.FullInitiative[id].PositionY)*(r_size))px;
@@ -68,18 +81,18 @@
                          height: @(r_size)px;
                          @(id == Model.StateData.Turn ? "border:2px solid #e67300;" : "")
                          "
-             class="board-cell"
-             pos_x="@Model.FullInitiative[id].PositionX"
-             pos_y="@Model.FullInitiative[id].PositionY">
+                 class="board-cell"
+                 pos_x="@Model.FullInitiative[id].PositionX"
+                 pos_y="@Model.FullInitiative[id].PositionY">
 
-            <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })"
-                 style="width:100%; height:100%"
-                 data-toggle="tooltip"
-                 data-placement="top"
-                 title=@(Model.FullInitiative[id].Name)>
+                <img src="@Url.Action("GetImg", new { path = (FileIO.GetProgDataPath(Model.FullInitiative[id].ImagePath)), type = (Model.FullInitiative[id].CreatureType) })"
+                     style="width:100%; height:100%"
+                     data-toggle="tooltip"
+                     data-placement="top"
+                     title=@(Model.FullInitiative[id].Name)>
 
-        </div>
-    </a>
+            </div>
+        </a>
     }
 
     <div style="position:absolute;top:0px;left:0px;">
@@ -96,40 +109,13 @@
     }
 </style>
 
-<script>
-    //window.onload = load;
-
-    function load() {
-
-        var w = window.innerWidth * 0.988;
-        var scale = w / 1000;
-        var cell_size = 30 * scale;
-
-        document.getElementById("battle-map-board").style.width = w + "px";
-        document.getElementById("battle-map-board").style.height = ((w) / 2) + "px";
-
-        var cells = document.getElementsByClassName("board-cell");
-        for (let i = 0; i < cells.length; i++) {
-            var x = cells[i].getAttribute("pos_x");
-            var y = cells[i].getAttribute("pos_y");
-
-
-            cells[i].style.left = (x * cell_size) + "px";
-            cells[i].style.bottom = (y * cell_size) + "px";
-            cells[i].style.width = cell_size + "px";
-            cells[i].style.height = cell_size + "px";
-
-        }
-    }
-</script>
-
 @section Scripts
 {
     @Scripts.Render("~/Scripts/BattleMapMenagement.js")
 }
 
 
-<!--Modal-->
+<!--Modal dodawanie tła-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -177,6 +163,7 @@
 </div>
 
 
+<!--Modal zadawanie obrarzeń-->
 <div class="modal fade" id="dmgModal" tabindex="-1" role="dialog" aria-labelledby="dmgModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -199,7 +186,7 @@
                                 <td><input id="Dmg" name="Dmg" type="number" value="" style="max-width: 300px; width: 300px;" /></td>
                             </tr>
                             <tr hidden>
-                                <td><input id="DmgCreatureId" name="DmgCreatureId" type="number" value=""/></td>
+                                <td><input id="DmgCreatureId" name="DmgCreatureId" type="number" value="" /></td>
                             </tr>
                             <tr>
                                 <th scope="row"></th>

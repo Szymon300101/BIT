@@ -1,6 +1,11 @@
 ﻿@model WebMVC.Models.BattleMapTransViewModel
 
-<div style="width: 200px; background:white;">   
+<div style="
+        width: @(Model.StateData.Width*10)px;
+        background:white;
+        font-size: @(Model.StateData.Width*4)%;
+        ">
+
     <div class="row">
         <div class="col-md-4" style="margin: 10px">
             <a class="btn btn-primary" href="../BattleMap/Clear">Wyczyść</a>
@@ -9,17 +14,17 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                 Dodaj tło
             </button>
-    </div>
+        </div>
     </div>
     <table class="table">
         @for (int i = 0; i < Model.FullInitiative.Count; i++)
         {
             <tr @(i == Model.StateData.Turn ? "style=background:#e67300;" : "")>
-                <td>@(i+1).@Model.FullInitiative[i].Name</td>               
+                <td>@(i+1).@Model.FullInitiative[i].Name</td>
             </tr>
         }
     </table>
     <div style="padding: 10px">
-         Następna tura <a class="btn btn-primary" href="../BattleMap/NewTurn"><i class="fas fa-arrow-right"></i></a>
+        Następna tura <a class="btn btn-primary" href="../BattleMap/NewTurn"><i class="fas fa-arrow-right"></i></a>
     </div>
 </div>
