@@ -24,7 +24,7 @@ namespace WebMVC.Controllers
 
             BattleMapTransViewModel model = new BattleMapTransViewModel();
 
-            model.FullInitiative = initiativeRecords;
+            model.FullInitiative = initiativeRecords.OrderByDescending(o => o.Initiative).ToList();
             model.StateData = battlemapRecord;
 
 
@@ -173,7 +173,7 @@ namespace WebMVC.Controllers
             thisCreature.HP = thisCreature.HP - dmgCreatureModel.Dmg;
 
 
-            if(thisCreature.HP <=0 && thisCreature.CreatureType != CreatureTypeEnum.player)
+            if(thisCreature.HP <=0 && thisCreature.CreatureType == CreatureTypeEnum.enemy)
             {
                 InitiativeIO.DeleteRecord(thisCreature.Id);
             }else

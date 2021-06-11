@@ -80,6 +80,7 @@
                          width:  @(r_size)px;
                          height: @(r_size)px;
                          @(id == Model.StateData.Turn ? "border:2px solid #e67300;" : "")
+                         @(Model.FullInitiative[id].HP==0 ? "border:5px solid red;" : "")
                          "
                  class="board-cell"
                  pos_x="@Model.FullInitiative[id].PositionX"
@@ -121,7 +122,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Dodaj stworzenie</h4>
+                <h4 class="modal-title" id="myModalLabel">Dodaj tło</h4>
             </div>
             <div class="modal-body">
                 @using (Html.BeginForm("AddBackground",
