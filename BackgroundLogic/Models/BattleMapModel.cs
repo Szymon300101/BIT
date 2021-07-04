@@ -8,9 +8,9 @@ namespace BackgroundLogic.Models
 {
     public class BattleMapModel
     {
-        public int Turn { get; set; }
-        public string BackgroundPath { get; set; }
-        public int MovingId { get; set; }
+        public int Turn { get; set; } //numer (w kolejności tabeli inicjatywy) stworzenia które ma teraz rundę
+        public string BackgroundPath { get; set; } //ścieżka względna obrazka tła
+        public int MovingId { get; set; } //Id stworzenia które aktualnie się rusza
 
         //wymiary w kratkach
         public int Width { get; set; }

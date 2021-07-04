@@ -13,14 +13,14 @@ namespace WebMVC.Controllers
     {
         public ActionResult Index()
         {
+            //odczyt danych z bazy
             List<CreatureModel> initiativeRecords = InitiativeIO.GetInitiative();
             List<CreatureModel> creatureRecords = CreatureIO.GetData();
-            InitaitiveTransViewModel model = new InitaitiveTransViewModel();
-            model.Data = initiativeRecords;
-            model.CreatureList = creatureRecords;
 
-            List<CreatureModel> SortedList = model.Data.OrderByDescending(o => o.Initiative).ToList();
-            model.Data = SortedList;
+            //układanie rekordów w tras model
+            InitaitiveTransViewModel model = new InitaitiveTransViewModel();
+            model.Data = initiativeRecords.OrderByDescending(o => o.Initiative).ToList();
+            model.CreatureList = creatureRecords;
 
             return View(model);
         }
@@ -44,9 +44,9 @@ namespace WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreatureModel model)
         {
-            var errors = ModelState.Select(x => x.Value.Errors)
-                           .Where(y => y.Count > 0)
-                           .ToList();
+            //var errors = ModelState.Select(x => x.Value.Errors)
+            //               .Where(y => y.Count > 0)
+            //               .ToList();
             if (ModelState.IsValid)
             {
                 try
@@ -68,6 +68,7 @@ namespace WebMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        //zmiana rekordu inicjatywy z poziomu tabelki
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Update(CreatureModel model)
@@ -76,6 +77,7 @@ namespace WebMVC.Controllers
             {
                 try
                 {
+                    //pozycja ustawiona na (-1,-1) oznacza, że pozostanie ona nie zmieniona
                     model.PositionX = -1;
                     model.PositionY = -1;
                     InitiativeIO.UpdateRecord(model);
@@ -101,6 +103,7 @@ namespace WebMVC.Controllers
         {
             try
             {
+                //pobranie rekordów z bazy danych
                 List<CreatureModel> records = InitiativeIO.GetInitiative();
 
                 foreach (var item in records)
@@ -124,6 +127,7 @@ namespace WebMVC.Controllers
 
                 foreach (var item in records)
                 {
+                    //inicjtywa ustawiona na 0 sprawi że UpdateRecord ją przelosuje
                     item.Initiative = 0;
                     InitiativeIO.UpdateRecord(item);
                 }
