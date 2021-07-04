@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using WebMVC.Helpers;
 using WebMVC.Models;
 
 namespace WebMVC.Controllers
@@ -38,6 +39,8 @@ namespace WebMVC.Controllers
             battlemapRecord.MovingId = id;
 
             BattleMapIO.UpdateRecord(battlemapRecord);
+            StateData.BMSyncMenager.CallForSync();
+
 
             return RedirectToAction("Index");
         }
@@ -56,16 +59,19 @@ namespace WebMVC.Controllers
                 creature.PositionX = x;
                 creature.PositionY = y;
                 InitiativeIO.UpdateRecord(creature);
+
             }
             battlemapRecord.MovingId = 0;
             BattleMapIO.UpdateRecord(battlemapRecord);
-
+            StateData.BMSyncMenager.CallForSync();
+            StateData.InitSyncMenager.CallForSync();
 
             return RedirectToAction("Index");
         }
         public ActionResult NewTurn()
         {
             BattleMapIO.NewTurn();
+            StateData.BMSyncMenager.CallForSync();
 
             return RedirectToAction("Index");
         }
@@ -80,6 +86,8 @@ namespace WebMVC.Controllers
                 initiative[i].PositionX = i;
                 initiative[i].PositionY = 0;
                 InitiativeIO.UpdateRecord(initiative[i]);
+                StateData.InitSyncMenager.CallForSync();
+                StateData.BMSyncMenager.CallForSync();
             }
 
             return RedirectToAction("Index");
@@ -93,6 +101,8 @@ namespace WebMVC.Controllers
             battlemapRecord.Width = model.Width;
             battlemapRecord.Height = model.Height;
             BattleMapIO.UpdateRecord(battlemapRecord);
+            StateData.BMSyncMenager.CallForSync();
+
 
 
             return RedirectToAction("Index");
@@ -176,7 +186,8 @@ namespace WebMVC.Controllers
             if(thisCreature.HP <=0 && thisCreature.CreatureType == CreatureTypeEnum.enemy)
             {
                 InitiativeIO.DeleteRecord(thisCreature.Id);
-            }else
+            }
+            else
             {
                 if (thisCreature.HP < 0)
                 {
@@ -190,9 +201,39 @@ namespace WebMVC.Controllers
 
             BattleMapIO.UpdateRecord(battlemapRecord);
 
+            StateData.BMSyncMenager.CallForSync();
+            StateData.InitSyncMenager.CallForSync();
+
 
 
             return RedirectToAction("Index");
+        }
+        
+        public void SyncBM()
+        {
+            Response.ContentType = "text/event-stream";
+
+            int id = StateData.BMSyncMenager.Subscribe();
+
+            DateTime startDate = DateTime.Now;
+            while (startDate.AddMinutes(10) > DateTime.Now)
+            {
+                Response.Write(string.Format("data: {0}\n\n", StateData.BMSyncMenager.IsNotSynced(id).ToString()));
+
+                try
+                {
+                    Response.Flush();
+                }
+                catch (Exception)
+                {
+                    StateData.BMSyncMenager.Unsubscribe(id);
+                    return;
+                }
+
+                System.Threading.Thread.Sleep(500);
+            }
+
+            Response.Close();
         }
     }
 }

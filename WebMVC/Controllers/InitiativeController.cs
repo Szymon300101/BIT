@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMVC.Helpers;
 using WebMVC.Models;
 
 namespace WebMVC.Controllers
@@ -30,6 +31,8 @@ namespace WebMVC.Controllers
             try
             {
                 InitiativeIO.DeleteRecord(id);
+                StateData.InitSyncMenager.CallForSync();
+                StateData.BMSyncMenager.CallForSync();
             }
             catch (Exception e)
             {
@@ -54,6 +57,9 @@ namespace WebMVC.Controllers
                     if (String.IsNullOrWhiteSpace(model.Name)) throw new Exception("Nazwa stworzenia nie może być pusta");
 
                     InitiativeIO.AddRecord(model);
+
+                    StateData.InitSyncMenager.CallForSync();
+                    StateData.BMSyncMenager.CallForSync();
                 }
                 catch (Exception e)
                 {
@@ -81,6 +87,8 @@ namespace WebMVC.Controllers
                     model.PositionX = -1;
                     model.PositionY = -1;
                     InitiativeIO.UpdateRecord(model);
+                    StateData.InitSyncMenager.CallForSync();
+                    StateData.BMSyncMenager.CallForSync();
                 }
                 catch (Exception e)
                 {
@@ -110,6 +118,8 @@ namespace WebMVC.Controllers
                 {
                     InitiativeIO.DeleteRecord(item.Id);
                 }
+                StateData.InitSyncMenager.CallForSync();
+                StateData.BMSyncMenager.CallForSync();
             }
             catch (Exception e)
             {
@@ -131,6 +141,8 @@ namespace WebMVC.Controllers
                     item.Initiative = 0;
                     InitiativeIO.UpdateRecord(item);
                 }
+                StateData.InitSyncMenager.CallForSync();
+                StateData.BMSyncMenager.CallForSync();
             }
             catch (Exception e)
             {
@@ -141,7 +153,32 @@ namespace WebMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        public void SyncInit()
+        {
+            Response.ContentType = "text/event-stream";
 
+            int id = StateData.InitSyncMenager.Subscribe();
+
+            DateTime startDate = DateTime.Now;
+            while (startDate.AddMinutes(10) > DateTime.Now)
+            {
+                Response.Write(string.Format("data: {0}\n\n", StateData.InitSyncMenager.IsNotSynced(id).ToString()));
+
+                try
+                {
+                    Response.Flush();
+                }
+                catch (Exception)
+                {
+                    StateData.InitSyncMenager.Unsubscribe(id);
+                    return;
+                }
+
+                System.Threading.Thread.Sleep(500);
+            }
+
+            Response.Close();
+        }
 
     }
 }

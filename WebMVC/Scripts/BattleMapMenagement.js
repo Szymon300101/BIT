@@ -1,11 +1,10 @@
-﻿
+﻿window.onload = load;
 
+function load() {
 
+    connectToSync();
 
-
-
-
-
+}
 
 
 
@@ -38,4 +37,33 @@ function dmgModalSetup(id) {
     document.getElementById("DmgCreatureId").value = id;
 
 
+}
+
+function connectToSync() {
+
+    if (window.EventSource == undefined) {
+        // If not supported  
+        console.log("Your browser doesn't support Server Sent Events.");
+        return;
+    } else {
+        var source = new EventSource('../BattleMap/SyncBM');
+
+        source.onopen = function (event) {
+            console.log("Connection Opened.");
+            document.getElementById('targetDiv').innerHTML += '<br>';
+        };
+
+        source.onerror = function (event) {
+            if (event.eventPhase == EventSource.CLOSED) {
+                console.log("Connection Closed.");
+            }
+        };
+
+        source.onmessage = function (event) {
+            console.log(event.data);
+            if (event.data == "True") {
+                location.reload();
+            }
+        };
+    }
 }

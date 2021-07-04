@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMVC.Helpers;
 
 namespace WebMVC.Controllers
 {
@@ -12,8 +13,6 @@ namespace WebMVC.Controllers
         public ActionResult Index()
         {
             var testData = InitiativeIO.GetInitiative();
-
-
 
             return RedirectToAction("Index", "Initiative");
         }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMVC.Helpers;
 
 namespace WebMVC.Controllers
 {
@@ -15,6 +16,7 @@ namespace WebMVC.Controllers
         {
             //usuwanie
             CreatureIO.DeleteRecord(id);
+            StateData.InitSyncMenager.CallForSync();
             return RedirectToAction("Index", "Initiative");
         }
 
@@ -25,6 +27,7 @@ namespace WebMVC.Controllers
             if (ModelState.IsValid)
             {
                 CreatureIO.AddRecord(model);
+                StateData.InitSyncMenager.CallForSync();
             }
 
 
@@ -37,6 +40,8 @@ namespace WebMVC.Controllers
             CreatureModel model = CreatureIO.Select(id);
 
             InitiativeIO.AddRecord(model);
+            StateData.InitSyncMenager.CallForSync();
+            StateData.BMSyncMenager.CallForSync();
 
 
             return RedirectToAction("Index", "Initiative");

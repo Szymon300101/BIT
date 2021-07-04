@@ -6,7 +6,7 @@ function load() {
         e.preventDefault()
         $(this).tab('show')
     })
-
+    connectToSync();
 
 }
 
@@ -52,3 +52,33 @@ function requestSaveImg() {
 //    if (document.getElementById("AC-Input").value == "")
 //        document.getElementById("AC-Input").value = 0;
 //}
+
+
+function connectToSync() {
+
+    if (window.EventSource == undefined) {
+        // If not supported  
+        console.log("Your browser doesn't support Server Sent Events.");
+        return;
+    } else {
+        var source = new EventSource('../Initiative/SyncInit');
+
+        source.onopen = function (event) {
+            console.log("Connection Opened.");
+            document.getElementById('targetDiv').innerHTML += '<br>';
+        };
+
+        source.onerror = function (event) {
+            if (event.eventPhase == EventSource.CLOSED) {
+                console.log("Connection Closed.");
+            }
+        };
+
+        source.onmessage = function (event) {
+            console.log(event.data);
+            if (event.data == "True") {
+                location.reload();
+            }
+        };
+    }
+}  
