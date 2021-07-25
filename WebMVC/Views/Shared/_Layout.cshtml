@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using WebMVC.Helpers;
 <html>
 <head>
     <meta charset="utf-8" />
@@ -22,10 +23,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Tabela Inicjatywy", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Battle Map", "Index", "BattleMap")</li>
+                    @if ((UserRoleEnum)TempData.Peek("role") == UserRoleEnum.none)
+                    {
+                        <li>@Html.ActionLink("Tabela Inicjatywy", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Battle Map", "Index", "BattleMap")</li>
+
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Tabela Inicjatywy", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Battle Map", "Index", "BattleMap")</li>
+                        <li>@Html.ActionLink("Wyloguj", "Logout", "User")</li>
+                    }
                 </ul>
-                <!--@Html.Partial("_LoginPartial") -->
+                
             </div>
         </div>
     </div>

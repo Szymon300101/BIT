@@ -173,11 +173,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InitiativeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CookiesHelper.cs" />
     <Compile Include="Helpers\StateData.cs" />
     <Compile Include="Helpers\SyncMenager.cs" />
+    <Compile Include="Helpers\UserRoleEnum.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddBackgroundModel.cs" />
     <Compile Include="Models\BattleMapTransViewModel.cs" />
@@ -251,6 +254,7 @@
     <Content Include="Views\Creature\CreatureListPartial.cshtml" />
     <Content Include="Views\BattleMap\Index.cshtml" />
     <Content Include="Views\BattleMap\BattleMapInitiativePartial.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

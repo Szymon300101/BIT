@@ -20,6 +20,12 @@ namespace WebMVC.Controllers
         // GET: BattleMap
         public ActionResult Index()
         {
+            UserRoleEnum role = CookiesHelper.VerifyUserRole(Request.Cookies["BIT"]);
+            TempData["role"] = role;
+            if (role == UserRoleEnum.none)
+                return RedirectToAction("Index", "User");
+            //role = (UserRoleEnum)TempData.Peek("role");
+
             List<CreatureModel> initiativeRecords = InitiativeIO.GetInitiative();
             BattleMapModel battlemapRecord = BattleMapIO.GetData();
 

@@ -14,6 +14,15 @@ namespace WebMVC.Controllers
     {
         public ActionResult Index()
         {
+            //weryfikacja roli
+            UserRoleEnum role = CookiesHelper.VerifyUserRole(Request.Cookies["BIT"]);
+            TempData["role"] = role;
+            if(role == UserRoleEnum.player)
+                return RedirectToAction("Index", "BattleMap");
+            else if(role == UserRoleEnum.none)
+                return RedirectToAction("Index", "User");
+            //role = (UserRoleEnum)TempData.Peek("role");
+
             //odczyt danych z bazy
             List<CreatureModel> initiativeRecords = InitiativeIO.GetInitiative();
             List<CreatureModel> creatureRecords = CreatureIO.GetData();
