@@ -1,9 +1,8 @@
 ﻿window.onload = load;
 
 function load() {
-
+    loadSyncBreaks();
     connectToSync();
-
 }
 
 
@@ -39,6 +38,8 @@ function dmgModalSetup(id) {
 
 }
 
+var source;
+
 function connectToSync() {
 
     if (window.EventSource == undefined) {
@@ -46,11 +47,10 @@ function connectToSync() {
         console.log("Your browser doesn't support Server Sent Events.");
         return;
     } else {
-        var source = new EventSource('../BattleMap/SyncBM');
+        source =new EventSource('../BattleMap/SyncBM');
 
         source.onopen = function (event) {
             console.log("Connection Opened.");
-            document.getElementById('targetDiv').innerHTML += '<br>';
         };
 
         source.onerror = function (event) {

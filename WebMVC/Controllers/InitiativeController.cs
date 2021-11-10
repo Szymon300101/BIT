@@ -169,7 +169,7 @@ namespace WebMVC.Controllers
             int id = StateData.InitSyncMenager.Subscribe();
 
             DateTime startDate = DateTime.Now;
-            while (startDate.AddMinutes(10) > DateTime.Now)
+            while (startDate.AddMinutes(1) > DateTime.Now)
             {
                 Response.Write(string.Format("data: {0}\n\n", StateData.InitSyncMenager.IsNotSynced(id).ToString()));
 
@@ -187,6 +187,7 @@ namespace WebMVC.Controllers
             }
 
             Response.Close();
+            StateData.InitSyncMenager.Unsubscribe(id);
         }
 
     }

@@ -19,21 +19,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Battle Initiative Tracker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="/" class="nav_link navbar-brand">Battle Initiative Tracker</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if ((UserRoleEnum)TempData.Peek("role") == UserRoleEnum.none)
                     {
-                        <li>@Html.ActionLink("Tabela Inicjatywy", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Battle Map", "Index", "BattleMap")</li>
+                        <li><a href="/" class="nav_link">Tabela Inicjatywy</a></li>
+                        <li><a href="BattleMap" class="nav_link">Battle Map</a></li>
 
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Tabela Inicjatywy", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Battle Map", "Index", "BattleMap")</li>
-                        <li>@Html.ActionLink("Wyloguj", "Logout", "User")</li>
+                        <li><a href="/" class="nav_link">Tabela Inicjatywy</a></li>
+                        <li><a href="BattleMap" class="nav_link">Battle Map</a></li>
+                        <li><a href="User/Logout" class="nav_link">Wyloguj</a></li>
                     }
                 </ul>
                 

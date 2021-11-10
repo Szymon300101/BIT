@@ -1,6 +1,7 @@
 ﻿window.onload = load;
 
 function load() {
+    loadSyncBreaks();
 
     $('#myTabs a').click(function (e) {
         e.preventDefault()
@@ -53,6 +54,7 @@ function requestSaveImg() {
 //        document.getElementById("AC-Input").value = 0;
 //}
 
+var source;
 
 function connectToSync() {
 
@@ -61,7 +63,7 @@ function connectToSync() {
         console.log("Your browser doesn't support Server Sent Events.");
         return;
     } else {
-        var source = new EventSource('../Initiative/SyncInit');
+        source = new EventSource('../Initiative/SyncInit');
 
         source.onopen = function (event) {
             console.log("Connection Opened.");

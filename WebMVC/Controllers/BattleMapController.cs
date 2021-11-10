@@ -7,11 +7,13 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using WebMVC.Helpers;
 using WebMVC.Models;
+
 
 namespace WebMVC.Controllers
 {
@@ -214,6 +216,8 @@ namespace WebMVC.Controllers
 
             return RedirectToAction("Index");
         }
+
+
         
         public void SyncBM()
         {
@@ -222,7 +226,7 @@ namespace WebMVC.Controllers
             int id = StateData.BMSyncMenager.Subscribe();
 
             DateTime startDate = DateTime.Now;
-            while (startDate.AddMinutes(10) > DateTime.Now)
+            while (startDate.AddMinutes(1) > DateTime.Now)
             {
                 Response.Write(string.Format("data: {0}\n\n", StateData.BMSyncMenager.IsNotSynced(id).ToString()));
 
@@ -239,6 +243,7 @@ namespace WebMVC.Controllers
                 System.Threading.Thread.Sleep(500);
             }
 
+            StateData.BMSyncMenager.Unsubscribe(id);
             Response.Close();
         }
     }
