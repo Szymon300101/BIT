@@ -1,7 +1,10 @@
-﻿using BackgroundLogic.InputOutput;
+﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.InputOutput;
 using BackgroundLogic.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -65,5 +68,6 @@ namespace WebMVC.Controllers
 
             return Json(contents, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

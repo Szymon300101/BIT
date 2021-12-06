@@ -36,8 +36,33 @@ namespace WebMVC.Controllers
             model.FullInitiative = initiativeRecords.OrderByDescending(o => o.Initiative).ToList();
             model.StateData = battlemapRecord;
 
-
             return View(model);
+
+        }
+        public ActionResult GetData()
+        {
+            string errors = "";
+            BattleMapTransViewModel model = new BattleMapTransViewModel();
+
+            UserRoleEnum role = CookiesHelper.VerifyUserRole(Request.Cookies["BIT"]);
+            TempData["role"] = role;
+            if (role == UserRoleEnum.none)
+            {
+                errors = "Błąd: Użytkownik nie ma przypisanej roli.";
+            }else
+            {
+
+                List<CreatureModel> initiativeRecords = InitiativeIO.GetInitiative();
+                BattleMapModel battlemapRecord = BattleMapIO.GetData();
+
+                model.FullInitiative = initiativeRecords.OrderByDescending(o => o.Initiative).ToList();
+                model.StateData = battlemapRecord;
+            }
+
+
+            var contents = new { dataModel = model , errors = errors};
+
+            return Json(contents, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -148,6 +173,14 @@ namespace WebMVC.Controllers
                 }
             }
         }
+
+        public ActionResult GetImgSrc(string path, CreatureTypeEnum type = CreatureTypeEnum.player)
+        {
+            var contents = new { src = Url.Action("GetImg", new { path = FileIO.GetProgDataPath(path), type = type }) };
+
+            return Json(contents, JsonRequestBehavior.AllowGet);
+        }
+
         [OutputCache(Duration = 20, Location = OutputCacheLocation.Client)]
         public ActionResult GetBackground(string path)
         {

@@ -67,18 +67,20 @@ function connectToSync() {
 
         source.onopen = function (event) {
             console.log("Connection Opened.");
-            document.getElementById('targetDiv').innerHTML += '<br>';
+            openedSyncConnection();
         };
 
         source.onerror = function (event) {
             if (event.eventPhase == EventSource.CLOSED) {
                 console.log("Connection Closed.");
+                breakSyncConnection();
             }
         };
 
         source.onmessage = function (event) {
             console.log(event.data);
             if (event.data == "True") {
+                breakSyncConnection();
                 location.reload();
             }
         };
