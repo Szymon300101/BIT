@@ -10,6 +10,13 @@ namespace BackgroundLogic.InputOutput
 {
     public static class FileIO
     {
+        private static string _progDataPath;
+
+        public static void LoadPath(string path)
+        {
+            _progDataPath = path;
+        }
+
         /// <summary>
         /// Łączy ścieżkę roota ProgData (z Web.config) złączoną z podaną ścieżką względną
         /// </summary>
@@ -26,7 +33,8 @@ namespace BackgroundLogic.InputOutput
         /// <returns>Zwraca ścieżkę ProgData z Web.config</returns>
         static public string GetProgDataPath()
         {
-            return ConfigurationManager.ConnectionStrings["ProgDataDirectory"].ConnectionString;
+            return _progDataPath;
+            //return ConfigurationManager.ConnectionStrings["ProgDataDirectory"].ConnectionString;
         }
 
         /// <summary>
