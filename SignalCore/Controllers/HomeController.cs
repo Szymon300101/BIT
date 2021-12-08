@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BackgroundLogic.InputOutput;
+using BackgroundLogic.Models;
+using Microsoft.AspNetCore.Mvc;
+using SignalCore.Helpers;
 
 namespace SignalCore.Controllers
 {
@@ -12,5 +15,26 @@ namespace SignalCore.Controllers
         {
             return RedirectToPage("/Index");
         }
+
+
+        public ActionResult GetInitaitive()
+        {
+            List<CreatureModel> initiative = new List<CreatureModel>();
+            ErrorInfo? error = null;
+
+            try
+            {
+                initiative = InitiativeIO.GetInitiative().OrderByDescending(item => item.Initiative).ToList();
+            }
+            catch (Exception e)
+            {
+                error = new ErrorInfo(e.Message, "", e.StackTrace);
+            }
+
+            var contents = new { initiative = initiative, error = error };
+
+            return Json(contents);
+        }
+
     }
 }

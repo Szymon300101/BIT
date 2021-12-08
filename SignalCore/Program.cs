@@ -33,10 +33,10 @@ app.MapControllerRoute(
 app.MapHub<TestHub>("/testHub");
 app.MapHub<BattleMapHub>("/bmHub");
 
-app.Run();
-
 //wczytywanie ścieżki progDataPath i zapisywanie jej w FileIO
 IConfiguration configuration = new ConfigurationBuilder()
                             .AddJsonFile("appsettings.json")
                             .Build();
 FileIO.LoadPath(configuration["ProgDataDirectory"]);
+
+app.Run();
