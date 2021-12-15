@@ -1,6 +1,6 @@
 ﻿let initiative = new Array();
 
-var connection = new signalR.HubConnectionBuilder().withUrl("testHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("hub").build();
 
 ajaxGetData() // + loadFullInitiative()
 
@@ -11,6 +11,11 @@ connection.on("GotDataPath", function (path) {
     var li = document.createElement("li");
     document.getElementById("messagesList").appendChild(li);
     li.textContent = `DataPath: ${path}`;
+});
+
+connection.on("FieldChanged", function (name, id, value) {
+    document.getElementById(`init-${name}-${id}`).value = value;
+    console.log(`init-${name}-${id} ` + value)
 });
 
 connection.start().then(function () {
@@ -47,27 +52,34 @@ function ajaxGetData() {
 
 function loadFullInitiative() {
     for (var i = 0; i < initiative.length; i++) {
+        let Id = initiative[i].id;
         let row = document.createElement("tr");
-        row.id = `init-row-${i}`;
+        row.id = `init-row-${Id}`;
 
         let init = document.createElement("td")
-        init.id = `init-init-${i}`;
-        init.textContent = initiative[i].initiative;
+            let init_input = document.createElement("input")
+            init_input.id = `init-initiative-${Id}`;
+            init_input.value = initiative[i].initiative;
+            init_input.style.width = '30px';
+            init_input.addEventListener("change", changeField, false);
+            init_input.fieldType = 'initiative';
+            init_input.dbId = Id;
+        init.appendChild(init_input);
 
         let name = document.createElement("td")
-        name.id = `init-name-${i}`;
+        name.id = `init-name-${Id}`;
         name.textContent = initiative[i].name;
 
         let hp = document.createElement("td")
-        hp.id = `init-hp-${i}`;
+        hp.id = `init-hp-${Id}`;
         hp.textContent = initiative[i].hp;
 
         let bonus = document.createElement("td")
-        bonus.id = `init-bonus-${i}`;
+        bonus.id = `init-bonus-${Id}`;
         bonus.textContent = initiative[i].initiativeBonus;
 
         let ac = document.createElement("td")
-        ac.id = `init-ac-${i}`;
+        ac.id = `init-ac-${Id}`;
         ac.textContent = initiative[i].ac;
 
         
@@ -77,6 +89,15 @@ function loadFullInitiative() {
         row.appendChild(bonus);
         row.appendChild(ac);
 
-        document.getElementById("initiative-table").appendChild(row);
+        //document.getElementById("initiative-table").appendChild(row);
     }
 }
+
+function changeField(evt) {
+    let type = evt.currentTarget.fieldType;
+    let dbId = evt.currentTarget.dbId;
+    let value = evt.currentTarget.value;
+    connection.invoke("ChangeField", type, dbId.toString(), value.toString()).catch(function (err) {
+        return console.error(err.toString());
+    });
+} 

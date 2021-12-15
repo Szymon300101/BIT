@@ -31,7 +31,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapHub<TestHub>("/testHub");
-app.MapHub<BattleMapHub>("/bmHub");
+app.MapHub<MainHub>("/hub");
 
 //wczytywanie ścieżki progDataPath i zapisywanie jej w FileIO
 IConfiguration configuration = new ConfigurationBuilder()
