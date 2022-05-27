@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundLogic", "Backgrou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalCore", "SignalCore\SignalCore.csproj", "{34D17974-52F2-4837-AD58-72F41D433227}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{A6DF79EB-B324-4556-81BA-C3B5740947F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{34D17974-52F2-4837-AD58-72F41D433227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34D17974-52F2-4837-AD58-72F41D433227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34D17974-52F2-4837-AD58-72F41D433227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6DF79EB-B324-4556-81BA-C3B5740947F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6DF79EB-B324-4556-81BA-C3B5740947F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6DF79EB-B324-4556-81BA-C3B5740947F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6DF79EB-B324-4556-81BA-C3B5740947F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
