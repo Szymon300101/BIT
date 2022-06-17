@@ -13,5 +13,19 @@ namespace WebApi.Hubs
 
             await Clients.All.RefreshCreatures();
         }
+
+        public async Task UpdateCreature(CreatureCRUDModel creature)
+        {
+            CreatureIO.UpdateRecord(creature.ToLogic());
+
+            await Clients.All.RefreshCreatures();
+        }
+
+        public async Task RemoveCreature(int creatureId)
+        {
+            CreatureIO.DeleteRecord(creatureId);
+
+            await Clients.All.RefreshCreatures();
+        }
     }
 }

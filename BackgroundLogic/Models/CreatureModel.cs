@@ -12,6 +12,7 @@ namespace BackgroundLogic.Models
         public CreatureTypeEnum CreatureType { get; set; }
 
         public int Id { get; set; }
+        public string Group { get; set; }
         public string Name { get; set; }
         public int Initiative { get; set; }
         public int HP { get; set; }

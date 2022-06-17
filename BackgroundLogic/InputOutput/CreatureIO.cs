@@ -112,5 +112,28 @@ namespace BackgroundLogic.InputOutput
             string output = JsonConvert.SerializeObject(rawData);
             FileIO.WriteText(fullPath, output);
         }
+
+        /// <summary>
+        /// Zapisuje podany rekord w bazie danych
+        /// </summary>
+        /// <param name="newModel"></param>
+        public static void UpdateRecord(CreatureModel newModel)
+        {
+            string fullPath = FileIO.GetProgDataPath(dataPath);
+
+            //deserializacja aktualnej bazy danych
+            List<CreatureInputModel> rawData = JsonConvert.DeserializeObject<List<CreatureInputModel>>(FileIO.ReadTxt(fullPath));
+
+            //znajdowanie pozycji potrzebnego rekordu w LIŚCIE pobranej z bazy danych (to nie jest Id w bazie danych)
+            int id = rawData.FindIndex(item => item.Id == newModel.Id);
+            if (id == -1) throw new Exception("Nie można zaktualizować rekordu: rekord nie istnieje.");
+
+            //aktualizacja wszystkich pól
+            rawData[id] = new CreatureInputModel(newModel);
+
+            //powrotna serializacja i zapis
+            string output = JsonConvert.SerializeObject(rawData);
+            FileIO.WriteText(fullPath, output);
+        }
     }
 }

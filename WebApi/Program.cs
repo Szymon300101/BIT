@@ -1,4 +1,5 @@
 ﻿using BackgroundLogic.InputOutput;
+using WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyHeader()
             .AllowAnyMethod()
-            //.WithOrigins("http://localhost:3000")
+            .WithOrigins("http://localhost:3000")
             .AllowCredentials();
     });
 });
@@ -39,7 +40,7 @@ app.MapControllers();
 
 
 //SignalR
-//app.MapHub<ChatHub>("/hubs/chat");
+app.MapHub<InitiativeHub>("/hubs/initiative");
 
 
 //wczytywanie ścieżki progDataPath i zapisywanie jej w FileIO

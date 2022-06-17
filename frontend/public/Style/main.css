@@ -1,0 +1,35 @@
+.accordion-body{
+    padding:0%;
+}
+
+.accordion-button{
+    padding: 10px;
+    font-weight: bold;
+}
+
+.margin{
+    margin:10px;
+}
+
+.no-margin{
+    margin:0px;
+}
+
+.no-padding{
+    padding:0px;
+}
+
+.full-width{
+    width: 100%;
+}
+
+._3LDgJ{
+   padding:inherit;
+   border: 1px solid #ced4da  ;
+   border-radius: .25rem; 
+}
+
+    /* ._3tcyg{
+        width: 100% !important;
+        height:fit-content !important;
+    } */

@@ -18,10 +18,11 @@ namespace BackgroundLogic.Models.InputModels
         {
             CreatureType = model.CreatureType;
             Id = model.Id;
+            Group = model.Group;
             Name = model.Name;
             HP = model.HP;
             AC = model.AC;
-            MaxHP = model.HP;
+            MaxHP = model.MaxHP;
             InitiativeBonus = model.InitiativeBonus;
             ImagePath = model.ImagePath;
         }
@@ -44,6 +45,7 @@ namespace BackgroundLogic.Models.InputModels
             }
 
             model.Id = Id;
+            model.Group = Group;
             model.Name = Name;
             model.Initiative = 0;
             model.HP = HP;

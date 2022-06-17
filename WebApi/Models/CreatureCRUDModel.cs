@@ -5,6 +5,7 @@ namespace WebApi.Models
     public class CreatureCRUDModel
     {
         public int Id { get; set; }
+        public string Group { get; set; }
         public string Name { get; set; }
         public int AC { get; set; }
         public int MaxHP { get; set; }
@@ -19,6 +20,7 @@ namespace WebApi.Models
         public CreatureCRUDModel(CreatureModel model)
         {
             Id=model.Id;
+            Group = model.Group;
             Name=model.Name;
             AC=model.AC;
             MaxHP=model.MaxHP;
@@ -29,11 +31,13 @@ namespace WebApi.Models
         public CreatureModel ToLogic()
         {
             CreatureModel creatureModel = new CreatureModel();
+            creatureModel.Id=Id;
+            creatureModel.Group = Group;
             creatureModel.Name=Name;
             creatureModel.AC=AC;
             creatureModel.MaxHP=MaxHP;
             creatureModel.InitiativeBonus=InitiativeBonus;
-            //creatureModel.ImagePath=ImagePath;
+            creatureModel.ImagePath=ImagePath;
 
             return creatureModel;
         }
