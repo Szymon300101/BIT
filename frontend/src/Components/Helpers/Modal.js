@@ -14,12 +14,12 @@ export default function Modal(props) {
             {`${DOMPurify.sanitize(props.btn_text)}`}
         </button>
 
-        <div className="modal fade" id={props.id + "-modal"} tabindex="-1" aria-labelledby={props.id + "-modalLabel"} aria-hidden="true">
+        <div className="modal fade" id={props.id + "-modal"} tabIndex="-1" aria-labelledby={props.id + "-modalLabel"} aria-hidden="true">
         <div className="modal-dialog">
             <div className="modal-content">
                 <div className="modal-header">
                     <h5 className="modal-title" id={props.id + "-modalLabel"}>{`${DOMPurify.sanitize(props.title)}`}</h5>
-                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" id={props.id + "-modal-close"} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
                     {props.body}

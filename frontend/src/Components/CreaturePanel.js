@@ -4,6 +4,7 @@ import { HubConnectionBuilder, HttpTransportType } from "@microsoft/signalr";
 import CreateCreature from './CreateCreature';
 import CreatureGroup from './CreatureGroup';
 import Modal from "./Helpers/Modal";
+import params from '..';
 
 export default function CreaturePanel() {
 
@@ -13,7 +14,7 @@ export default function CreaturePanel() {
 
     function getCreatures()
     {
-        fetch("https://localhost:7131/Initiative/GetCreatures")
+        fetch(params.localHostPath + "/Initiative/GetCreatures")
         .then(res => res.json())
         .then(
           (result) => {
@@ -72,7 +73,7 @@ export default function CreaturePanel() {
     
 
     
-    const addCreature = async (name, initiativeBonus, ac, maxHP, group) => {
+    const addCreature = async (name, initiativeBonus, ac, maxHP, group, imagePath) => {
         const model = {
             Id: 0,
             Name: name,
@@ -80,7 +81,7 @@ export default function CreaturePanel() {
             MaxHP: 1 * maxHP,
             Group: group,
             InitiativeBonus: 1 * initiativeBonus ,
-            ImagePath: ""
+            ImagePath: imagePath
         };
 
         try {
@@ -92,7 +93,7 @@ export default function CreaturePanel() {
         }
     }
     
-    const updateCreature = async (id, name, initiativeBonus, ac, maxHP, group) => {
+    const updateCreature = async (id, name, initiativeBonus, ac, maxHP, group, imagePath) => {
         const model = {
             Id: id,
             Name: name,
@@ -100,7 +101,7 @@ export default function CreaturePanel() {
             MaxHP: 1 * maxHP,
             Group: group,
             InitiativeBonus: 1 * initiativeBonus ,
-            ImagePath: ""
+            ImagePath: imagePath
         };
 
         try {
@@ -131,7 +132,7 @@ export default function CreaturePanel() {
             body = {<CreateCreature 
                         addCreature = {addCreature}
                         groupList = {groupList} 
-                        close = {null}
+                        closeModal = {() => {document.getElementById('create-modal-close').click()}}
                         updateMode = {false}
                     />}
             title = "Dodaj stworzenie"
@@ -139,14 +140,15 @@ export default function CreaturePanel() {
             <div className="accordion" id="accordion-creatures">
                 {
                     groupList.map( group =>
-                        <CreatureGroup 
-                            key = {group} 
-                            name = {group} 
-                            items = { state.items.filter(item => item.group === group)} 
-                            removeCreature = {removeCreature}
-                            updateCreature = {updateCreature}
-                            groupList = {groupList}
-                        />
+                        <div key = {group} >
+                            <CreatureGroup 
+                                name = {group} 
+                                items = { state.items.filter(item => item.group === group)} 
+                                removeCreature = {removeCreature}
+                                updateCreature = {updateCreature}
+                                groupList = {groupList}
+                            /> 
+                        </div>
                     ) ?? ""
                 }
             </div>

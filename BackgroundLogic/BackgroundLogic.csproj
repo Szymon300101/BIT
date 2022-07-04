@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CreatureTypeEnum.cs" />
+    <Compile Include="Helpers\PathLookup.cs" />
     <Compile Include="InputOutput\BattleMapIO.cs" />
     <Compile Include="InputOutput\CreatureIO.cs" />
     <Compile Include="InputOutput\FileIO.cs" />

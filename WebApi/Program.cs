@@ -1,4 +1,5 @@
-﻿using BackgroundLogic.InputOutput;
+﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.InputOutput;
 using WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,8 +17,9 @@ builder.Services.AddCors(options =>
     {
         policy.AllowAnyHeader()
             .AllowAnyMethod()
-            .WithOrigins("http://localhost:3000")
-            .AllowCredentials();
+            //.WithOrigins("http://localhost:3000")
+            //.AllowCredentials()
+            .AllowAnyOrigin();
     });
 });
 
@@ -48,5 +50,6 @@ IConfiguration configuration = new ConfigurationBuilder()
                             .AddJsonFile("appsettings.json")
                             .Build();
 FileIO.LoadPath(configuration["ProgDataDirectory"]);
+PathLookup.ProgData = configuration["ProgDataDirectory"];
 
 app.Run();

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -93,6 +95,33 @@ namespace BackgroundLogic.InputOutput
             File.Delete(fullPath);
 
             return true;
+        }
+
+        /// <summary>
+        /// Metoda formatuje dowolny obrazek do kwadratu o określonym rozmiarze i zapisuje go na dysku
+        /// </summary>
+        /// <param name="fullPath">Ścieżka bezwzględna dla pliku</param>
+        /// <param name="fileStream">Obrazek do obróbki w formacie Stream (np. InputStream)</param>
+        /// <param name="size">Długość boku. Domyślnie 500</param>
+        /// <exception cref="Exception"> Wiele różnych błędów (nie jestem pewien jakie)</exception>
+        public static void FormatAndSaveImg(string fullPath, Stream fileStream, int size = 500)
+        {
+
+            //przycinanie i skalowanie obazka do kwadratu 500 na 500
+            Bitmap img = new Bitmap(fileStream);
+            if (img.Width > img.Height)
+            {
+                img = new Bitmap(img, new Size(Convert.ToInt32(1.0 * img.Width / img.Height * size), size));
+            }
+            else
+            {
+                img = new Bitmap(img, new Size(size, Convert.ToInt32(1.0 * img.Height / img.Width * size)));
+            }
+
+            Rectangle cropField = new Rectangle((img.Width - size) / 2, (img.Height - size) / 2, size, size); ;
+            img = img.Clone(cropField, img.PixelFormat);
+
+            img.Save(fullPath, ImageFormat.Png);
         }
 
     }

@@ -9,3 +9,6 @@ root.render(
     <InitPage />
   </React.StrictMode>
 );
+
+const params = {localHostPath: "https://localhost:7131"}
+export default params;

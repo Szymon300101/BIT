@@ -12,17 +12,19 @@ export default function CreatureGroup(props) {
                     </button>
                 </h2>
                 <div id={`accordion-collapse-${props.name}`} className="accordion-collapse collapse show" aria-labelledby={`accordion-heading-${props.name}`}>
-                    <div className="accordion-body" key={props.name}>
+                    <div className="accordion-body">
                         <ul className="list-group list-group-flush">
                             {
                                 props.items.map(item =>
-                                    <CreatureTile 
-                                        key = {item.Id} 
-                                        item = {item}
-                                        removeCreature = {props.removeCreature}
-                                        updateCreature = {props.updateCreature}
-                                        groupList = {props.groupList} 
-                                    />
+                                    <div key={item.id} >
+                                         <CreatureTile 
+                                            item = {item}
+                                            removeCreature = {props.removeCreature}
+                                            updateCreature = {props.updateCreature}
+                                            groupList = {props.groupList} 
+                                        />
+                                    </div>
+                                    
                                 )
                             }
 

@@ -1,6 +1,9 @@
-﻿using BackgroundLogic.InputOutput;
+﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.InputOutput;
 using BackgroundLogic.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
+using System.Drawing.Imaging;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -19,6 +22,34 @@ namespace WebApi.Controllers
                 models.Add(new CreatureCRUDModel(creature));
 
             return new { items = models };
+        }
+
+        [HttpPost(Name = "SaveImg")]
+        public async Task<object> SaveImgAsync([FromForm] IFormFile file)
+        {
+            string fullPath = $"{PathLookup.ProgData}{PathLookup.CreatureImages}/{file.GetHashCode()}.png";
+            string error = "";
+            string errorMessage = "";
+
+            try
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+
+                    FileIO.FormatAndSaveImg(fullPath, memoryStream, 200);
+                }
+
+                
+            }
+            catch (Exception e)
+            {
+                error = e.Message;
+                errorMessage = e.StackTrace ?? "";
+            }
+            
+
+            return new { path = fullPath, error = error, errorMessage = errorMessage};
         }
     }
 }

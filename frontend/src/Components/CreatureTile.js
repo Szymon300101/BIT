@@ -8,7 +8,7 @@ export default function CreatureTile(props) {
   return (
     <li key={props.item.id} className="list-group-item">
         <div className='row'>
-            <div className='col-md-9' key={'Name'}>
+            <div className='col-md-8' key={'Name'}>
                 {`${DOMPurify.sanitize(props.item.name)}`}
             </div>
             <div className='col-md-1' key={'Edit'}>
@@ -19,15 +19,10 @@ export default function CreatureTile(props) {
                     body = {<CreateCreature 
                                 updateCreature = {props.updateCreature}
                                 groupList = {props.groupList} 
-                                close = {null}
+                                closeModal = {() => document.getElementById(`update-${props.item.id}-modal-close`).click()}
                                 updateMode = {true}
 
-                                id = {props.item.id}
-                                name = {props.item.name}
-                                initiativeBonus = {props.item.initiativeBonus}
-                                maxHP = {props.item.maxHP}
-                                ac = {props.item.ac}
-                                group = {props.item.group}
+                                item = {props.item}
                             />}
                     title = "Zmień stworzenie"
                 />
