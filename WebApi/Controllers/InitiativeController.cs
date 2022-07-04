@@ -33,14 +33,14 @@ namespace WebApi.Controllers
 
             try
             {
+                FileIO.CleanupImages();
+
                 using (var memoryStream = new MemoryStream())
                 {
                     await file.CopyToAsync(memoryStream);
 
                     FileIO.FormatAndSaveImg(fullPath, memoryStream, 200);
                 }
-
-                
             }
             catch (Exception e)
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
@@ -122,6 +124,24 @@ namespace BackgroundLogic.InputOutput
             img = img.Clone(cropField, img.PixelFormat);
 
             img.Save(fullPath, ImageFormat.Png);
+        }
+
+        public static void CleanupImages()
+        {
+            List<CreatureModel> creatures = CreatureIO.GetData();
+
+            List<string> fileNames = new List<string>();
+            foreach (CreatureModel creature in creatures)
+            {
+                if(creature.ImagePath != null)
+                    fileNames.Add(creature.ImagePath.Split('/').Last());
+            }
+            DirectoryInfo creatureImagesDir = new DirectoryInfo(PathLookup.ProgData + PathLookup.CreatureImages);
+            foreach (var file in creatureImagesDir.GetFiles())
+            {
+                if (!fileNames.Contains(file.Name))
+                    DeleteFile(file.FullName);
+            }
         }
 
     }

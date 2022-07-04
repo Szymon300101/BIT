@@ -1,4 +1,5 @@
-﻿using BackgroundLogic.Models;
+﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.Models;
 
 namespace WebApi.Models
 {
@@ -10,12 +11,26 @@ namespace WebApi.Models
         public int AC { get; set; }
         public int MaxHP { get; set; }
         public int InitiativeBonus { get; set; }
-        public string ImagePath { get; set; }
+
+        private string imagePathPath;
+        public string ImagePath
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(imagePathPath))
+                    return PathLookup.GetProgDataPath(imagePathPath);
+                else
+                    return "";
+            }
+            set
+            {
+                imagePathPath = PathLookup.GetPartPath(value);
+            }
+        }
 
         public CreatureCRUDModel()
         {
             Name = "";
-            ImagePath = "";
         }
         public CreatureCRUDModel(CreatureModel model)
         {
@@ -25,7 +40,7 @@ namespace WebApi.Models
             AC=model.AC;
             MaxHP=model.MaxHP;
             InitiativeBonus=model.InitiativeBonus;
-            ImagePath=model.ImagePath;
+            imagePathPath = model.ImagePath;
         }
 
         public CreatureModel ToLogic()
@@ -37,7 +52,7 @@ namespace WebApi.Models
             creatureModel.AC=AC;
             creatureModel.MaxHP=MaxHP;
             creatureModel.InitiativeBonus=InitiativeBonus;
-            creatureModel.ImagePath=ImagePath;
+            creatureModel.ImagePath= imagePathPath;
 
             return creatureModel;
         }
