@@ -2,9 +2,21 @@ import React from 'react'
 import DOMPurify from 'dompurify';
 
 import CreateCreature from './CreateCreature';
-import Modal from "./Helpers/Modal";
+import Modal from "../Helpers/Modal";
 
 export default function CreatureTile(props) {
+
+
+    const removeCreature = async (id) => {
+        try {
+            console.log(id);         
+            await props.connection.send('RemoveCreature', id);
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
   return (
     <li key={props.item.id} className="list-group-item">
         <div className='row'>
@@ -17,7 +29,7 @@ export default function CreatureTile(props) {
                     btn_className = "btn btn-sm bi bi-pencil-square no-padding"
                     id = {`update-${props.item.id}`}
                     body = {<CreateCreature 
-                                updateCreature = {props.updateCreature}
+                                connection = {props.connection}
                                 groupList = {props.groupList} 
                                 closeModal = {() => document.getElementById(`update-${props.item.id}-modal-close`).click()}
                                 updateMode = {true}
@@ -28,7 +40,7 @@ export default function CreatureTile(props) {
                 />
             </div>
             <div className='col-md-1' key={'Remove'}>
-                <i className="bi bi-trash3" onClick={() => props.removeCreature(props.item.id)}></i>
+                <i className="bi bi-trash3" onClick={() => removeCreature(props.item.id)}></i>
             </div>
             <div className='col-md-1' key={'Use'}>
                 <i className="bi bi-arrow-right-square"></i>

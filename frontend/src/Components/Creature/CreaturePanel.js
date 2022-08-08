@@ -3,13 +3,13 @@ import { HubConnectionBuilder, HttpTransportType } from "@microsoft/signalr";
 
 import CreateCreature from './CreateCreature';
 import CreatureGroup from './CreatureGroup';
-import Modal from "./Helpers/Modal";
-import params from '..';
+import Modal from '../Helpers/Modal';
+import params from '../..';
 
-export default function CreaturePanel() {
+export default function CreaturePanel(props) {
 
     const [state, setState] = useState([]);
-    const [ connection, setConnection ] = useState(null);
+    const [ connection, setConnection ] = useState(props.connection);
     const [ groupList, setGroupList ] = useState([]);
 
     function getCreatures()
@@ -24,9 +24,6 @@ export default function CreaturePanel() {
             });
             console.log(result);
           },
-          // Uwaga: to ważne, żeby obsłużyć błędy tutaj, a
-          // nie w bloku catch(), aby nie przetwarzać błędów
-          // mających swoje źródło w komponencie.
           (error) => {
             setState({
               isLoaded: true,
@@ -41,20 +38,8 @@ export default function CreaturePanel() {
     }, []);
 
     useEffect(() => {
-        setGroupList([... new Set(state?.items?.map(item => item.group))])
+        setGroupList([...new Set(state?.items?.map(item => item.group))])
     }, [state]);
-
-    useEffect(() => {
-        const newConnection = new HubConnectionBuilder()
-        .withUrl('https://localhost:7131/hubs/initiative', {
-            skipNegotiation: true,
-            transport: HttpTransportType.WebSockets
-          })
-        .withAutomaticReconnect()
-        .build();
-    
-        setConnection(newConnection);
-    }, []);
 
     
     useEffect(() => {
@@ -73,55 +58,8 @@ export default function CreaturePanel() {
     
 
     
-    const addCreature = async (name, initiativeBonus, ac, maxHP, group, imagePath) => {
-        const model = {
-            Id: 0,
-            Name: name,
-            AC: 1 * ac,
-            MaxHP: 1 * maxHP,
-            Group: group,
-            InitiativeBonus: 1 * initiativeBonus ,
-            ImagePath: imagePath
-        };
 
-        try {
-            console.log(model);         
-            await connection.send('AddCreature', model);
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
     
-    const updateCreature = async (id, name, initiativeBonus, ac, maxHP, group, imagePath) => {
-        const model = {
-            Id: id,
-            Name: name,
-            AC: 1 * ac,
-            MaxHP: 1 * maxHP,
-            Group: group,
-            InitiativeBonus: 1 * initiativeBonus ,
-            ImagePath: imagePath
-        };
-
-        try {
-            console.log(model);         
-            await connection.send('UpdateCreature', model);
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
-
-    const removeCreature = async (id) => {
-        try {
-            console.log(id);         
-            await connection.send('RemoveCreature', id);
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
 
     return (
         <>
@@ -130,7 +68,7 @@ export default function CreaturePanel() {
             btn_className = "btn btn-primary margin"
             id = "create"
             body = {<CreateCreature 
-                        addCreature = {addCreature}
+                        connection = {connection}
                         groupList = {groupList} 
                         closeModal = {() => {document.getElementById('create-modal-close').click()}}
                         updateMode = {false}
@@ -144,8 +82,7 @@ export default function CreaturePanel() {
                             <CreatureGroup 
                                 name = {group} 
                                 items = { state.items.filter(item => item.group === group)} 
-                                removeCreature = {removeCreature}
-                                updateCreature = {updateCreature}
+                                connection = {connection}
                                 groupList = {groupList}
                             /> 
                         </div>

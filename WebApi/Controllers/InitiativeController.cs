@@ -24,6 +24,18 @@ namespace WebApi.Controllers
             return new { items = models };
         }
 
+        [HttpGet(Name = "GetInitiative")]
+        public Object GetInitiative()
+        {
+            List<CreatureModel> rawData = InitiativeIO.GetInitiative();
+            List<InitiativeCRUDModel> models = new List<InitiativeCRUDModel>();
+            foreach (CreatureModel creature in rawData)
+                models.Add(new InitiativeCRUDModel(creature));
+
+
+            return new { items = models };
+        }
+
         [HttpPost(Name = "SaveImg")]
         public async Task<object> SaveImgAsync([FromForm] IFormFile file)
         {

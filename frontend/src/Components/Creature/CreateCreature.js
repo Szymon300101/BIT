@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import FormInput from "./Helpers/FormInput";
-import params from "..";
-import axios from "axios";
-import jquery from "jquery";
-import GetImage from "../Functions/GetImage";
+import FormInput from "../Helpers/FormInput";
+import params from "../..";
+import GetImage from "../../Functions/GetImage";
 
 const CreateCreature = props => {
     const [id, setId] = useState(0);
@@ -19,18 +17,33 @@ const CreateCreature = props => {
         e.preventDefault();
 
         const isNameProvided = name && name !== "";
-        const isInitiativeBonusProvided = initiativeBonus && initiativeBonus !== "";
         const isAcProvided = ac && ac !== 0;
         const isMaxHpProvided = maxHP && maxHP !== 0;
         const isGroupProvided = group && group !== "";
 
-        if(isNameProvided && isInitiativeBonusProvided && isAcProvided && isMaxHpProvided && isGroupProvided){
+        if(isNameProvided && isAcProvided && isMaxHpProvided && isGroupProvided){
             console.log("Submit");
 
             if(!props.updateMode){
-                props.addCreature(name, initiativeBonus, ac, maxHP, group, imagePath);
+                addCreature({
+                    Id: 0,
+                    Name: name,
+                    AC: 1 * ac,
+                    MaxHP: 1 * maxHP,
+                    Group: group,
+                    InitiativeBonus: 1 * initiativeBonus ,
+                    ImagePath: imagePath
+                });
             }else{
-                props.updateCreature(id, name, initiativeBonus, ac, maxHP, group, imagePath);
+                updateCreature({
+                    Id: id,
+                    Name: name,
+                    AC: 1 * ac,
+                    MaxHP: 1 * maxHP,
+                    Group: group,
+                    InitiativeBonus: 1 * initiativeBonus ,
+                    ImagePath: imagePath
+                });
             }
 
             props.closeModal();
@@ -97,6 +110,28 @@ const CreateCreature = props => {
                 console.log(error)
             }
         )
+    }
+
+    const addCreature = async (model) => {
+
+        try {
+            console.log(model);         
+            await props.connection.send('AddCreature', model);
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+    
+    const updateCreature = async (model) => {
+
+        try {
+            console.log(model);         
+            await props.connection.send('UpdateCreature', model);
+        }
+        catch(e) {
+            console.log(e);
+        }
     }
 
     return (

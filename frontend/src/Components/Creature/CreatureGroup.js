@@ -19,8 +19,7 @@ export default function CreatureGroup(props) {
                                     <div key={item.id} >
                                          <CreatureTile 
                                             item = {item}
-                                            removeCreature = {props.removeCreature}
-                                            updateCreature = {props.updateCreature}
+                                            connection = {props.connection}
                                             groupList = {props.groupList} 
                                         />
                                     </div>
