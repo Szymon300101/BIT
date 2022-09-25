@@ -24,7 +24,7 @@ namespace SignalCore.Controllers
 
             try
             {
-                initiative = InitiativeIO.GetInitiative().OrderByDescending(item => item.Initiative).ToList();
+                initiative = InitiativeIO.SelectAll().OrderByDescending(item => item.Initiative).ToList();
             }
             catch (Exception e)
             {

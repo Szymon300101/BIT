@@ -74,8 +74,9 @@ namespace BackgroundLogic.InputOutput
         /// </summary>
         public static void NewTurn()
         {
-            BattleMapModel model = BattleMapIO.GetData();
-            List<CreatureModel> initiative = InitiativeIO.GetInitiative();
+            throw new NotImplementedException();
+            /*BattleMapModel model = BattleMapIO.GetData();
+            List<CreatureModel> initiative = InitiativeIO.SelectAll();
 
             if (model.Turn < initiative.Count - 1)
             {
@@ -86,7 +87,7 @@ namespace BackgroundLogic.InputOutput
                 model.Turn = 0;
             }
 
-            UpdateRecord(model);
+            UpdateRecord(model);*/
         }
 
     }

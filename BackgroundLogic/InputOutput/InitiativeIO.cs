@@ -1,4 +1,5 @@
-﻿using BackgroundLogic.Models;
+﻿using BackgroundLogic.InputOutput.Interfaces;
+using BackgroundLogic.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace BackgroundLogic.InputOutput
     /// <summary>
     /// Klasa obsługująca bazę danych inicjatywy
     /// </summary>
-    public static class InitiativeIO
+    public class InitiativeIO : IInitiativeIO
     {
         private static string initiativePath = "DataBase/InitiativeData.json"; //ścieżka względna pliku bazy danych
 
@@ -19,7 +20,7 @@ namespace BackgroundLogic.InputOutput
         /// Metoda zwraca listę rekordów inicjatywy.
         /// </summary>
         /// <returns></returns>
-        public static List<CreatureModel> GetInitiative()
+        public List<CreatureModel> SelectAll()
         {
             List<CreatureModel> allData = new List<CreatureModel>();
 
@@ -42,7 +43,7 @@ namespace BackgroundLogic.InputOutput
         /// Usuwa rekord o podanym Id
         /// </summary>
         /// <param name="id">Id w bazie danych rekordu do usunięcia</param>
-        public static void DeleteRecord(int id)
+        public void Delete(int id)
         {
 
             string fullPath = FileIO.GetProgDataPath(initiativePath);
@@ -64,7 +65,7 @@ namespace BackgroundLogic.InputOutput
         /// Zapisuje podany rekord w bazie danych
         /// </summary>
         /// <param name="newModel"></param>
-        public static void AddRecord(CreatureModel newModel)
+        public void Insert(CreatureModel model)
         {
 
             string fullPath = FileIO.GetProgDataPath(initiativePath);
@@ -83,17 +84,17 @@ namespace BackgroundLogic.InputOutput
                     MaxId = id1;
                 }    
             }
-            newModel.Id = MaxId + 1;
+            model.Id = MaxId + 1;
 
             //losowanie inicjatywy dla nowego rekordu, jeżeli nie jeszcze jej nie ma
-            if(newModel.Initiative==0)
+            if(model.Initiative==0)
             {
                 Random randomiser = new Random();
-                newModel.Initiative = randomiser.Next(1, 20)+newModel.InitiativeBonus;
+                model.Initiative = randomiser.Next(1, 20)+ model.InitiativeBonus;
             }
 
             //dodawawnie nowego rekordu do listy(z konwersją na InputModel), serializacja i zapis z powrotem do bazy danych
-            rawData.Add(new InitiativeInputModel(newModel)); 
+            rawData.Add(new InitiativeInputModel(model)); 
             string output = JsonConvert.SerializeObject(rawData);
             FileIO.WriteText(fullPath, output);
 
@@ -102,8 +103,8 @@ namespace BackgroundLogic.InputOutput
         /// <summary>
         /// Aktualizacja podanego rekordu w bazie danych. Wyszukuje rekord i zamienia wartości wybranych pól.
         /// </summary>
-        /// <param name="newModel"></param>
-        public static void UpdateRecord(CreatureModel newModel)
+        /// <param name="model"></param>
+        public void Update(CreatureModel model)
         {
 
             string fullPath = FileIO.GetProgDataPath(initiativePath);
@@ -112,21 +113,21 @@ namespace BackgroundLogic.InputOutput
             List<InitiativeInputModel> rawData = JsonConvert.DeserializeObject<List<InitiativeInputModel>>(FileIO.ReadTxt(fullPath));
 
             //losowanie inicjatywy dla nowego rekordu, jeżeli nie jeszcze jej nie ma
-            if (newModel.Initiative == 0)
+            if (model.Initiative == 0)
             {
                 Random randomiser = new Random();
-                newModel.Initiative = randomiser.Next(1, 20) + newModel.InitiativeBonus;
+                model.Initiative = randomiser.Next(1, 20) + model.InitiativeBonus;
             }
 
             //znajdowanie pozycji potrzebnego rekordu w LIŚCIE pobranej z bazy danych (to nie jest Id w bazie danych)
-            int id = rawData.FindIndex(item => item.Id == newModel.Id);
+            int id = rawData.FindIndex(item => item.Id == model.Id);
             if (id == -1) throw new Exception("Nie można zaktualizować rekordu: rekord nie istnieje.");
 
             //aktualizacja wybranych pól
-            rawData[id].Initiative = newModel.Initiative;
-            rawData[id].HP = newModel.HP;
-            if(newModel.PositionX != -1) rawData[id].PositionX = newModel.PositionX;
-            if(newModel.PositionY != -1) rawData[id].PositionY = newModel.PositionY;
+            rawData[id].Initiative = model.Initiative;
+            rawData[id].HP = model.HP;
+            if(model.PositionX != -1) rawData[id].PositionX = model.PositionX;
+            if(model.PositionY != -1) rawData[id].PositionY = model.PositionY;
 
             //powrotna serializacja i zapis
             string output = JsonConvert.SerializeObject(rawData);

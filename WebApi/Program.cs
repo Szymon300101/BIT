@@ -1,6 +1,12 @@
 ﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.Helpers.Interfaces;
 using BackgroundLogic.InputOutput;
+using BackgroundLogic.InputOutput.Interfaces;
+using WebApi.Helpers;
+using WebApi.Helpers.Interfaces;
 using WebApi.Hubs;
+using WebApi.Models.Factories;
+using WebApi.Models.Factories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +28,11 @@ builder.Services.AddCors(options =>
             .AllowAnyOrigin();
     });
 });
+
+builder.Services.AddScoped<IInitiativeIO, InitiativeIO>();
+builder.Services.AddScoped<IInitiativeConverter, InitiativeConverter>();
+builder.Services.AddScoped<IInitiativeCRUDFactory, InitiativeCRUDFactory>();
+builder.Services.AddSingleton<IPathMenager, PathLookup>();
 
 var app = builder.Build();
 
@@ -50,6 +61,6 @@ IConfiguration configuration = new ConfigurationBuilder()
                             .AddJsonFile("appsettings.json")
                             .Build();
 FileIO.LoadPath(configuration["ProgDataDirectory"]);
-PathLookup.ProgData = configuration["ProgDataDirectory"];
+PathLookup.StaticSetProgData(configuration["ProgDataDirectory"]);
 
 app.Run();

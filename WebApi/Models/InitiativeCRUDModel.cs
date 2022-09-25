@@ -1,20 +1,21 @@
 ﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.Helpers.Interfaces;
 using BackgroundLogic.Models;
 
 namespace WebApi.Models
 {
     public class InitiativeCRUDModel
     {
-        public int Id { get; set; }
-        public string Group { get; set; }
-        public string Name { get; set; }
-        public int Initiative { get; set; }
-        public int AC { get; set; }
-        public int HP { get; set; }
-        public int MaxHP { get; set; }
-        public int InitiativeBonus { get; set; }
-        public int PositionX { get; set; }
-        public int PositionY { get; set; }
+        public int Id { get; private set; }
+        public string Group { get; private set; }
+        public string Name { get; private set; }
+        public int Initiative { get; private set; }
+        public int AC { get; private set; }
+        public int HP { get; private set; }
+        public int MaxHP { get; private set; }
+        public int InitiativeBonus { get; private set; }
+        public int PositionX { get; private set; }
+        public int PositionY { get; private set; }
 
         private string imagePathPath;
         public string ImagePath
@@ -22,22 +23,25 @@ namespace WebApi.Models
             get
             {
                 if (!String.IsNullOrEmpty(imagePathPath))
-                    return PathLookup.GetProgDataPath(imagePathPath);
+                    return _pathLookup.GetProgDataPath(imagePathPath);
                 else
                     return "";
             }
-            set
+            private set
             {
-                imagePathPath = PathLookup.GetPartPath(value);
+                imagePathPath = _pathLookup.GetPartPath(value);
             }
         }
 
-        public InitiativeCRUDModel()
+        private readonly IPathMenager _pathLookup;
+
+        public InitiativeCRUDModel(IPathMenager pathMenager)
         {
             Name = "";
+            _pathLookup = pathMenager;
         }
 
-        public InitiativeCRUDModel(CreatureModel model)
+        public InitiativeCRUDModel(CreatureModel model, IPathMenager pathMenager)
         {
             Id=model.Id;
             Group = model.Group;
@@ -50,6 +54,8 @@ namespace WebApi.Models
             PositionX=model.PositionX;
             PositionY=model.PositionY;
             imagePathPath = model.ImagePath;
+
+            _pathLookup = pathMenager;
         }
 
         public CreatureModel ToLogic()

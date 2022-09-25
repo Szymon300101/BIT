@@ -33,33 +33,33 @@ namespace WebApi.Hubs
 
 
 
-
+/*
         public async Task EnrollToInitiative(int creatureId)
         {
-            InitiativeIO.AddRecord(CreatureIO.Select(creatureId));
+            InitiativeIO.Insert(CreatureIO.Select(creatureId));
 
             await Clients.All.RefreshInitiative();
         }
 
         public async Task AddToInitiative(InitiativeCRUDModel record)
         {
-            InitiativeIO.AddRecord(record.ToLogic());
+            InitiativeIO.Insert(record.ToLogic());
 
             await Clients.All.RefreshInitiative();
         }
 
         public async Task UpdateInitiative(InitiativeCRUDModel record)
         {
-            InitiativeIO.UpdateRecord(record.ToLogic());
+            InitiativeIO.Update(record.ToLogic());
 
             await Clients.All.RefreshInitiative();
         }
 
         public async Task RemoveFromInitiative(int creatureId)
         {
-            InitiativeIO.DeleteRecord(creatureId);
+            InitiativeIO.Delete(creatureId);
 
             await Clients.All.RefreshInitiative();
-        }
+        }*/
     }
 }

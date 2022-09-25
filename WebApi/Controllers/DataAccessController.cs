@@ -1,7 +1,11 @@
 ﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.Helpers.Interfaces;
+using BackgroundLogic.InputOutput;
+using BackgroundLogic.Logic.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using System.Drawing.Imaging;
+using WebApi.Helpers;
 
 namespace WebApi.Controllers
 {
@@ -9,37 +13,35 @@ namespace WebApi.Controllers
     [Route("[controller]/[Action]")]
     public class DataAccessController : Controller
     {
+        readonly IPathMenager _pathLookup;
+        readonly IImageLogic _imageLogic;
+        public DataAccessController(IPathMenager pathLookup, IImageLogic imageLogic)
+        {
+            _pathLookup = pathLookup;
+            _imageLogic = imageLogic;
+        }
 
         /// <summary>
-        /// Zwraca 'src' obrazka (png), które można urzyć w html'u
+        /// Zwraca 'src' obrazka (png), które można użyć w html'u
         /// </summary>
         /// <param name="path">Ścieżka bezwzględna obrazka w formacie 'png'</param>
-        /// <returns></returns>
         [HttpPost(Name = "GetImg")]
         public Object GetImg([FromForm] string path)
         {
-            string error = "";
-            string errorMessage = "";
+            AjaxErrorInfo error = new AjaxErrorInfo(); 
+            string base64Image = "";
 
-            if (path == null)
+            try
             {
-                path = PathLookup.GetProgDataPath("noImage.png");
+                path = _imageLogic.HandleBadImagePaths(path);
+                base64Image = _imageLogic.GetBase64StringForImage(path);
+            }
+            catch (Exception e)
+            {
+                error = new AjaxErrorInfo(e);
             }
 
-            if (!System.IO.File.Exists(path))
-            {
-                path = PathLookup.GetProgDataPath("noImage.png");
-            }
-
-            using (var srcImage = Image.FromFile(path))
-            {
-                using (var streak = new MemoryStream())
-                {
-                    srcImage.Save(streak, ImageFormat.Png);
-                    //return File(streak.ToArray(), "image/png");
-                    return new { url = $"data:image/png;base64,{Convert.ToBase64String(streak.ToArray())}", error = error, errorMessage = errorMessage };
-                }
-            }
+            return new { url = $"data:image/png;base64,{base64Image}", error = error};
         }
     }
 }

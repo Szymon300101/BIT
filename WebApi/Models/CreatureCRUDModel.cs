@@ -1,4 +1,5 @@
 ﻿using BackgroundLogic.Helpers;
+using BackgroundLogic.Helpers.Interfaces;
 using BackgroundLogic.Models;
 
 namespace WebApi.Models
@@ -18,21 +19,24 @@ namespace WebApi.Models
             get
             {
                 if (!String.IsNullOrEmpty(imagePathPath))
-                    return PathLookup.GetProgDataPath(imagePathPath);
+                    return _pathLookup.GetProgDataPath(imagePathPath);
                 else
                     return "";
             }
             set
             {
-                imagePathPath = PathLookup.GetPartPath(value);
+                imagePathPath = _pathLookup.GetPartPath(value);
             }
         }
 
-        public CreatureCRUDModel()
+        private readonly IPathMenager _pathLookup;
+
+        public CreatureCRUDModel(IPathMenager pathLookup)
         {
             Name = "";
+            _pathLookup = pathLookup;
         }
-        public CreatureCRUDModel(CreatureModel model)
+        public CreatureCRUDModel(CreatureModel model, IPathMenager pathLookup)
         {
             Id=model.Id;
             Group = model.Group;
@@ -41,6 +45,8 @@ namespace WebApi.Models
             MaxHP=model.MaxHP;
             InitiativeBonus=model.InitiativeBonus;
             imagePathPath = model.ImagePath;
+
+            _pathLookup = pathLookup;
         }
 
         public CreatureModel ToLogic()

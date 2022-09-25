@@ -1,9 +1,11 @@
 ﻿using BackgroundLogic.Helpers;
 using BackgroundLogic.InputOutput;
+using BackgroundLogic.InputOutput.Interfaces;
 using BackgroundLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
 using System.Drawing.Imaging;
+using WebApi.Helpers.Interfaces;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -12,56 +14,22 @@ namespace WebApi.Controllers
     [Route("[controller]/[Action]")]
     public class InitiativeController : Controller
     {
+        readonly IInitiativeIO _initiativeIO;
+        readonly IInitiativeConverter _initiativeConverter;
 
-        [HttpGet(Name = "GetCreatures")]
-        public Object GetCreatures()
+        public InitiativeController(IInitiativeIO initiativeIO, IInitiativeConverter initiativeConverter)
         {
-            List<CreatureModel> rawData = CreatureIO.GetData();
-            List<CreatureCRUDModel> models = new List<CreatureCRUDModel>();
-            foreach (CreatureModel creature in rawData)
-                models.Add(new CreatureCRUDModel(creature));
-
-            return new { items = models };
+            _initiativeIO = initiativeIO;
+            _initiativeConverter = initiativeConverter;
         }
 
         [HttpGet(Name = "GetInitiative")]
         public Object GetInitiative()
         {
-            List<CreatureModel> rawData = InitiativeIO.GetInitiative();
-            List<InitiativeCRUDModel> models = new List<InitiativeCRUDModel>();
-            foreach (CreatureModel creature in rawData)
-                models.Add(new InitiativeCRUDModel(creature));
+            List<CreatureModel> rawData = _initiativeIO.SelectAll();
+            List<InitiativeCRUDModel> viewModels = _initiativeConverter.ConvertListFromCreatures(rawData);
 
-
-            return new { items = models };
-        }
-
-        [HttpPost(Name = "SaveImg")]
-        public async Task<object> SaveImgAsync([FromForm] IFormFile file)
-        {
-            string fullPath = $"{PathLookup.ProgData}{PathLookup.CreatureImages}/{file.GetHashCode()}.png";
-            string error = "";
-            string errorMessage = "";
-
-            try
-            {
-                FileIO.CleanupImages();
-
-                using (var memoryStream = new MemoryStream())
-                {
-                    await file.CopyToAsync(memoryStream);
-
-                    FileIO.FormatAndSaveImg(fullPath, memoryStream, 200);
-                }
-            }
-            catch (Exception e)
-            {
-                error = e.Message;
-                errorMessage = e.StackTrace ?? "";
-            }
-            
-
-            return new { path = fullPath, error = error, errorMessage = errorMessage};
+            return new { items = viewModels };
         }
     }
 }

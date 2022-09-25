@@ -99,50 +99,5 @@ namespace BackgroundLogic.InputOutput
             return true;
         }
 
-        /// <summary>
-        /// Metoda formatuje dowolny obrazek do kwadratu o określonym rozmiarze i zapisuje go na dysku
-        /// </summary>
-        /// <param name="fullPath">Ścieżka bezwzględna dla pliku</param>
-        /// <param name="fileStream">Obrazek do obróbki w formacie Stream (np. InputStream)</param>
-        /// <param name="size">Długość boku. Domyślnie 500</param>
-        /// <exception cref="Exception"> Wiele różnych błędów (nie jestem pewien jakie)</exception>
-        public static void FormatAndSaveImg(string fullPath, Stream fileStream, int size = 500)
-        {
-
-            //przycinanie i skalowanie obazka do kwadratu 500 na 500
-            Bitmap img = new Bitmap(fileStream);
-            if (img.Width > img.Height)
-            {
-                img = new Bitmap(img, new Size(Convert.ToInt32(1.0 * img.Width / img.Height * size), size));
-            }
-            else
-            {
-                img = new Bitmap(img, new Size(size, Convert.ToInt32(1.0 * img.Height / img.Width * size)));
-            }
-
-            Rectangle cropField = new Rectangle((img.Width - size) / 2, (img.Height - size) / 2, size, size); ;
-            img = img.Clone(cropField, img.PixelFormat);
-
-            img.Save(fullPath, ImageFormat.Png);
-        }
-
-        public static void CleanupImages()
-        {
-            List<CreatureModel> creatures = CreatureIO.GetData();
-
-            List<string> fileNames = new List<string>();
-            foreach (CreatureModel creature in creatures)
-            {
-                if(creature.ImagePath != null)
-                    fileNames.Add(creature.ImagePath.Split('/').Last());
-            }
-            DirectoryInfo creatureImagesDir = new DirectoryInfo(PathLookup.ProgData + PathLookup.CreatureImages);
-            foreach (var file in creatureImagesDir.GetFiles())
-            {
-                if (!fileNames.Contains(file.Name))
-                    DeleteFile(file.FullName);
-            }
-        }
-
     }
 }
