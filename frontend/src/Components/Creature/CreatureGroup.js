@@ -2,25 +2,25 @@ import React from 'react'
 import DOMPurify from 'dompurify';
 import CreatureTile from './CreatureTile';
 
-export default function CreatureGroup(props) {
+export default function CreatureGroup({ name, items,  groupList, onEditCreature, onDeleteCreature }) {
     return (
         <>
             <div className="accordion-item">
-                <h2 className="accordion-header" id={`accordion-heading-${props.name}`}>
-                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#accordion-collapse-${props.name}`} aria-expanded="true" aria-controls={`accordion-collapse-${props.name}`}>
-                        {`${DOMPurify.sanitize(props.name)}`}
+                <h2 className="accordion-header" id={`accordion-heading-${name}`}>
+                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#accordion-collapse-${name}`} aria-expanded="true" aria-controls={`accordion-collapse-${name}`}>
+                        {`${DOMPurify.sanitize(name)}`}
                     </button>
                 </h2>
-                <div id={`accordion-collapse-${props.name}`} className="accordion-collapse collapse show" aria-labelledby={`accordion-heading-${props.name}`}>
+                <div id={`accordion-collapse-${name}`} className="accordion-collapse collapse show" aria-labelledby={`accordion-heading-${name}`}>
                     <div className="accordion-body">
                         <ul className="list-group list-group-flush">
                             {
-                                props.items.map(item =>
+                                items.map(item =>
                                     <div key={item.id} >
                                          <CreatureTile 
-                                            item = {item}
-                                            connection = {props.connection}
-                                            groupList = {props.groupList} 
+                                            creature = {item}
+                                            onEditCreature = {onEditCreature}
+                                            onDeleteCreature = {onDeleteCreature}
                                         />
                                     </div>
                                     

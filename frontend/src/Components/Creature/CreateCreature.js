@@ -3,88 +3,91 @@ import FormInput from "../Helpers/FormInput";
 import params from "../..";
 import GetImage from "../../Functions/GetImage";
 
+class Creature{
+    constructor(){
+        this.id = 0;
+        this.name = "";
+        this.ac = 10;
+        this.maxHp = 10;
+        this.group = "";
+        this.initiativeBonus = 0;
+        this.imagePath = "";
+    }
+}
+
+const hasRequiredFields = (creature) => {
+    if(!creature.name || creature.name == "") return false;
+    if(!creature.group || creature.group == "") return false;
+    if(!creature.ac || creature.ac === 0) return false;
+    if(!creature.maxHp || creature.maxHp === 0) return false;
+
+    return true;
+}
+
+const toBackendModel = (creature) => {
+    return {
+        Id: creature.id,
+        Name: creature.name,
+        AC: 1 * creature.ac,
+        MaxHP: 1 * creature.maxHp,
+        Group: creature.group,
+        InitiativeBonus: 1 * creature.initiativeBonus ,
+        ImagePath: creature.imagePath
+    }
+}
+
 const CreateCreature = props => {
-    const [id, setId] = useState(0);
-    const [name, setName] = useState('');
-    const [initiativeBonus, setInitiativeBonus] = useState(0);
-    const [ac, setAc] = useState(10);
-    const [maxHP, setMaxHP] = useState(1);
-    const [group, setGroup] = useState('');
+    const [creature, setCreature] = useState(new Creature());
     const [imageURL, setImageURL] = useState('');
-    const [imagePath, setImagePath] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const isNameProvided = name && name !== "";
-        const isAcProvided = ac && ac !== 0;
-        const isMaxHpProvided = maxHP && maxHP !== 0;
-        const isGroupProvided = group && group !== "";
-
-        if(isNameProvided && isAcProvided && isMaxHpProvided && isGroupProvided){
+        if(hasRequiredFields(creature)){
             console.log("Submit");
 
             if(!props.updateMode){
-                addCreature({
-                    Id: 0,
-                    Name: name,
-                    AC: 1 * ac,
-                    MaxHP: 1 * maxHP,
-                    Group: group,
-                    InitiativeBonus: 1 * initiativeBonus ,
-                    ImagePath: imagePath
-                });
+                addCreature(toBackendModel(creature));
             }else{
-                updateCreature({
-                    Id: id,
-                    Name: name,
-                    AC: 1 * ac,
-                    MaxHP: 1 * maxHP,
-                    Group: group,
-                    InitiativeBonus: 1 * initiativeBonus ,
-                    ImagePath: imagePath
-                });
+                updateCreature(toBackendModel(creature));
             }
 
             props.closeModal();
         }
         else
         {
-            console.log(id, name, initiativeBonus, ac, maxHP, group)
-            alert("Źle");
+            console.log(creature)
+            alert("Brak wymaganych pól.");
         }
     }
 
     useEffect(() => {
-        if(props.updateMode){
-            
-            setId(props.item.id)
-            setName(props.item.name);
-            setInitiativeBonus(props.item.initiativeBonus);
-            setAc(props.item.ac);
-            setMaxHP(props.item.maxHP);
-            setGroup(props.item.group);
-            setImagePath(props.item.imagePath)
+        if(props.updateMode && props.item !== null){
+            let newCreature = new Creature();
+            newCreature.id = props.item.id;
+            newCreature.name = props.item.name;
+            newCreature.maxHp = props.item.maxHP;
+            newCreature.ac = props.item.ac;
+            newCreature.group = props.item.group;
+            newCreature.initiativeBonus = props.item.initiativeBonus;
+            newCreature.imagePath = props.item.imagePath;
+            setCreature(newCreature);
         }
-    }, []);
+    }, [props.item]);
 
     useEffect(() => {
-        if(imagePath !== ''){
-            GetImage(imagePath)
+        if(creature.imagePath !== ''){
+            GetImage(creature.imagePath)
             .then(result => setImageURL(result.url));
+        }else{
+            setImageURL("")
         }
-    }, [imagePath, '']);
+    }, [creature.imagePath]);
 
     const onClear = (e) =>{
         e.preventDefault();
 
-        setName('');
-        setInitiativeBonus(0);
-        setAc(10);
-        setMaxHP(1);
-        setGroup('');
-        setImagePath('');
-        setImageURL('');
+        setCreature(new Creature())
     }
 
     const onImageUpload = (image) => {
@@ -103,7 +106,7 @@ const CreateCreature = props => {
                 if(result.error !== ""){
                     console.error(result.error);
                 }else{
-                    setImagePath(result.path)
+                    setCreature({...creature, imagePath: result.path})
                 }
             },
             (error) => {
@@ -142,8 +145,8 @@ const CreateCreature = props => {
                     type = "text" 
                     title = "Nazwa" 
                     name = "name" 
-                    value = {name}
-                    onChange = {(value) => setName(value)} 
+                    value = {creature.name}
+                    onChange = {(value) => setCreature({...creature, name: value})} 
                     description = {"opis"}/>
                 <div className="row">
                     <div className="col-md-6">
@@ -151,8 +154,8 @@ const CreateCreature = props => {
                             type = "number" 
                             title = "Max HP" 
                             name = "maxHP" 
-                            value = {maxHP}
-                            onChange = {(value) => setMaxHP(value)} 
+                            value = {creature.maxHp}
+                            onChange = {(value) => setCreature({...creature, maxHp: value})} 
                             description = {""}/>
                     </div>
                     <div className="col-md-6">
@@ -160,8 +163,8 @@ const CreateCreature = props => {
                             type = "number" 
                             title = "AC" 
                             name = "ac" 
-                            value = {ac}
-                            onChange = {(value) => setAc(value)} 
+                            value = {creature.ac}
+                            onChange = {(value) => setCreature({...creature, ac: value})}
                             description = {""}/>
                     </div>
                 </div>
@@ -172,9 +175,9 @@ const CreateCreature = props => {
                             type = "combo" 
                             title = "Grupa" 
                             name = "group" 
-                            value = {group}
+                            value = {creature.group}
                             comboBoxList = {props.groupList}
-                            onChange = {(value) => setGroup(value)} 
+                            onChange = {(value) => setCreature({...creature, group: value})}
                             description = {""}/>
                     </div>
                     <div className="col-md-6">
@@ -182,14 +185,14 @@ const CreateCreature = props => {
                             type = "number" 
                             title = "Bonus do do inicjatywy" 
                             name = "initiativeBonus" 
-                            value = {initiativeBonus}
-                            onChange = {(value) => setInitiativeBonus(value)} 
+                            value = {creature.initiativeBonus}
+                            onChange = {(value) => setCreature({...creature, initiativeBonus: value})}
                             description = {""}/>
                     </div>
                 </div>
 
-                <input hidden id={`image-upload-${id}`} type="file" onChange={(e) => onImageUpload(e.target.files[0])} />
-                <label htmlFor={`image-upload-${id}`} className="image-upload-field">
+                <input hidden id={`image-upload-${creature.id}`} type="file" onChange={(e) => onImageUpload(e.target.files[0])} />
+                <label htmlFor={`image-upload-${creature.id}`} className="image-upload-field">
                     {imageURL === '' ? 
                         <div><div className="btn btn-primary" role="button">Prześlij zdjęcie</div></div> : 
                         <img src={imageURL} height="200" width="200"/>}

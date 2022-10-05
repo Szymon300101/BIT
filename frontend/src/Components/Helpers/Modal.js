@@ -10,7 +10,7 @@ export default function Modal(props) {
 
   return (
     <>
-        <button type="button" className={props.btn_className} data-bs-toggle="modal" data-bs-target={"#" + props.id + "-modal"}>
+        <button type="button" id={props.id + "-modal-open"} className={props.btn_className} data-bs-toggle="modal" data-bs-target={"#" + props.id + "-modal"}>
             {`${DOMPurify.sanitize(props.btn_text)}`}
         </button>
 

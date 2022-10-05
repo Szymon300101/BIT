@@ -6,11 +6,12 @@ import CreatureGroup from './CreatureGroup';
 import Modal from '../Helpers/Modal';
 import params from '../..';
 
-export default function CreaturePanel(props) {
+export default function CreaturePanel({ connection }) {
 
-    const [state, setState] = useState([]);
-    const [ connection, setConnection ] = useState(props.connection);
+    const [creatures, setCreatures] = useState([]);
     const [ groupList, setGroupList ] = useState([]);
+
+    const [ creatureToEdit, setCreatureToEdit ] = useState(null);
 
     function getCreatures()
     {
@@ -18,17 +19,11 @@ export default function CreaturePanel(props) {
         .then(res => res.json())
         .then(
           (result) => {
-            setState({
-              isLoaded: true,
-              items: result.items
-            });
+            setCreatures(result.items);
             console.log(result);
           },
           (error) => {
-            setState({
-              isLoaded: true,
-              error
-            });
+              console.error(error);
           }
         )
     }
@@ -38,8 +33,8 @@ export default function CreaturePanel(props) {
     }, []);
 
     useEffect(() => {
-        setGroupList([...new Set(state?.items?.map(item => item.group))])
-    }, [state]);
+        setGroupList([...new Set(creatures?.map(item => item.group))])
+    }, [creatures]);
 
     
     useEffect(() => {
@@ -56,7 +51,20 @@ export default function CreaturePanel(props) {
         }
     }, [connection]);
     
+    const onEditCreature = (creature) => {
+        setCreatureToEdit(creature);
+        document.getElementById('update-modal-open').click()
+    }
 
+    const onDeleteCreature = async (creature) => {
+        try {
+            console.log(creature);         
+            await connection.send('RemoveCreature', creature.id);
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
     
 
     
@@ -75,15 +83,29 @@ export default function CreaturePanel(props) {
                     />}
             title = "Dodaj stworzenie"
         />
+        <Modal 
+            btn_text = ""
+            btn_className = "btn btn-primary margin hidden"
+            id = "update"
+            body = {<CreateCreature 
+                        connection = {connection}
+                        groupList = {groupList} 
+                        closeModal = {() => {document.getElementById('update-modal-close').click()}}
+                        updateMode = {true}
+                        item = {creatureToEdit}
+                    />}
+            title = "Edytuj stworzenie"
+        />
             <div className="accordion" id="accordion-creatures">
                 {
                     groupList.map( group =>
                         <div key = {group} >
                             <CreatureGroup 
                                 name = {group} 
-                                items = { state.items.filter(item => item.group === group)} 
-                                connection = {connection}
+                                items = { creatures.filter(item => item.group === group)} 
                                 groupList = {groupList}
+                                onEditCreature = {onEditCreature}
+                                onDeleteCreature = {onDeleteCreature}
                             /> 
                         </div>
                     ) ?? ""
