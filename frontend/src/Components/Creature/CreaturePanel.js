@@ -39,15 +39,9 @@ export default function CreaturePanel({ connection }) {
     
     useEffect(() => {
         if (connection) {
-            connection.start()
-                .then(result => {
-                    console.log('Connected!');
-    
-                    connection.on('RefreshCreatures', message => {
-                        getCreatures();
-                    });
-                })
-                .catch(e => console.log('Connection failed: ', e));
+            connection.on('RefreshCreatures', message => {
+                getCreatures();
+            });
         }
     }, [connection]);
     
@@ -60,6 +54,16 @@ export default function CreaturePanel({ connection }) {
         try {
             console.log(creature);         
             await connection.send('RemoveCreature', creature.id);
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
+    const onEnrollCreature = async (creature) => {
+        try {
+            console.log(creature);         
+            await connection.send('EnrollToInitiative', creature.id);
         }
         catch(e) {
             console.log(e);
@@ -106,6 +110,7 @@ export default function CreaturePanel({ connection }) {
                                 groupList = {groupList}
                                 onEditCreature = {onEditCreature}
                                 onDeleteCreature = {onDeleteCreature}
+                                onEnrollCreature = {onEnrollCreature}
                             /> 
                         </div>
                     ) ?? ""

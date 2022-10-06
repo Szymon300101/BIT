@@ -91,6 +91,8 @@ namespace BackgroundLogic.InputOutput
                 Random randomiser = new Random();
                 newModel.Initiative = randomiser.Next(1, 20)+newModel.InitiativeBonus;
             }
+            if (newModel.HP == 0)
+                newModel.HP = newModel.MaxHP;
 
             //dodawawnie nowego rekordu do listy(z konwersją na InputModel), serializacja i zapis z powrotem do bazy danych
             rawData.Add(new InitiativeInputModel(newModel)); 
@@ -123,10 +125,7 @@ namespace BackgroundLogic.InputOutput
             if (id == -1) throw new Exception("Nie można zaktualizować rekordu: rekord nie istnieje.");
 
             //aktualizacja wybranych pól
-            rawData[id].Initiative = newModel.Initiative;
-            rawData[id].HP = newModel.HP;
-            if(newModel.PositionX != -1) rawData[id].PositionX = newModel.PositionX;
-            if(newModel.PositionY != -1) rawData[id].PositionY = newModel.PositionY;
+            rawData[id] = new InitiativeInputModel(newModel);
 
             //powrotna serializacja i zapis
             string output = JsonConvert.SerializeObject(rawData);

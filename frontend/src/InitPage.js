@@ -18,8 +18,12 @@ function InitPage() {
       })
     .withAutomaticReconnect()
     .build();
+    newConnection.start()
+    .then( result => {
+      console.log('Connected!');
+      setConnection(newConnection);
+    });
 
-    setConnection(newConnection);
 }, []);
 
   return (

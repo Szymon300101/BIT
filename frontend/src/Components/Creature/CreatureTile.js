@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 import CreateCreature from './CreateCreature';
 import Modal from "../Helpers/Modal";
 
-export default function CreatureTile({ creature, onEditCreature, onDeleteCreature }) {
+export default function CreatureTile({ creature, onEditCreature, onDeleteCreature, onEnroll }) {
 
 
 
@@ -21,7 +21,7 @@ export default function CreatureTile({ creature, onEditCreature, onDeleteCreatur
                 <i className="bi bi-trash3" onClick={() => onDeleteCreature(creature)}></i>
             </div>
             <div className='col-md-1' key={'Use'}>
-                <i className="bi bi-arrow-right-square"></i>
+                <i className="bi bi-arrow-right-square"onClick={() => onEnroll(creature)}></i>
             </div>
         </div>
     </li>

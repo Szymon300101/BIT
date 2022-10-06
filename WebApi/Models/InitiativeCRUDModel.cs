@@ -28,7 +28,8 @@ namespace WebApi.Models
             }
             set
             {
-                imagePathPath = PathLookup.GetPartPath(value);
+                if (!String.IsNullOrEmpty(value))
+                    imagePathPath = PathLookup.GetPartPath(value);
             }
         }
 

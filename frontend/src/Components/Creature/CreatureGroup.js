@@ -2,7 +2,7 @@ import React from 'react'
 import DOMPurify from 'dompurify';
 import CreatureTile from './CreatureTile';
 
-export default function CreatureGroup({ name, items,  groupList, onEditCreature, onDeleteCreature }) {
+export default function CreatureGroup({ name, items,  groupList, onEditCreature, onDeleteCreature, onEnrollCreature }) {
     return (
         <>
             <div className="accordion-item">
@@ -21,6 +21,8 @@ export default function CreatureGroup({ name, items,  groupList, onEditCreature,
                                             creature = {item}
                                             onEditCreature = {onEditCreature}
                                             onDeleteCreature = {onDeleteCreature}
+                                            onEnroll = {onEnrollCreature}
+
                                         />
                                     </div>
                                     

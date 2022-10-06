@@ -33,7 +33,7 @@ namespace WebApi.Controllers
                 models.Add(new InitiativeCRUDModel(creature));
 
 
-            return new { items = models };
+            return new { items = models.OrderByDescending(item => item.Initiative) };
         }
 
         [HttpPost(Name = "SaveImg")]

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FormInput from "../Helpers/FormInput";
 import params from "../..";
 import GetImage from "../../Functions/GetImage";
+import { UploadImage } from "../../Functions/DBActions";
 
 class Creature{
     constructor(){
@@ -91,28 +92,9 @@ const CreateCreature = props => {
     }
 
     const onImageUpload = (image) => {
-
-        const formData = new FormData();
-        formData.append("file", image);
-        fetch(params.localHostPath + "/Initiative/SaveImg",{
-            method: `POST`,
-            body: formData,
+        UploadImage(image, (path) => {
+            setCreature({...creature, imagePath: path})
         })
-        .then(res => res.json())
-        .then(
-            (result) => {
-                //console.log(result);
-
-                if(result.error !== ""){
-                    console.error(result.error);
-                }else{
-                    setCreature({...creature, imagePath: result.path})
-                }
-            },
-            (error) => {
-                console.log(error)
-            }
-        )
     }
 
     const addCreature = async (model) => {
